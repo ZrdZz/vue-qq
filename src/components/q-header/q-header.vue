@@ -11,12 +11,21 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import eventHub from '../../eventHub'
+
   export default {
-    props: {
-      title: {
-        type: String,
-        default: '消息'
+    data() {
+      return {
+        title: '消息' 
       }
+    },
+    methods: {
+      changeTitle(title) {
+        this.title = title
+      }
+    },
+    created() {
+      eventHub.$on('change-title', this.changeTitle)
     }
   }
 </script>

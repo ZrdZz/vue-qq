@@ -21,22 +21,17 @@
 </template>
 
 <script>
+  import eventHub from '../../eventHub'
+
   export default {
     methods: {
       changeTitle(e) {
-        let title = ''
-        let node = e.target
-        if (node.tagName === 'DIV') {
-          title = node.lastChild.innerHTML
-        }
-        if (node.tagName === 'I') {
-          title = node.nextSibling.nextSibling.innerHTML
-        }
-        if (node.tagName === 'SPAN') {
-          title = node.innerHTML
-        }
-        this.$emit('changeTitle', title)
+        eventHub.$emit('change-title', e.currentTarget.lastChild.innerHTML)
       }
+    },
+    mounted() {
+      let clickLink = document.querySelector('.router-link-active')
+      clickLink.click()
     }
   }
 </script>
