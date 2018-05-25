@@ -3,7 +3,9 @@
     <!-- 使用组件小写 -->
     <q-header></q-header>
     <search></search>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     <tab></tab>
   </div>
 </template>
@@ -18,6 +20,9 @@
       QHeader,
       Search,
       Tab
+    },
+    created() {
+      // this.$router.push('/login')
     }
   }
 </script>

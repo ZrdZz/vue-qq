@@ -2,19 +2,19 @@
   <div class="tab">
     <!-- tag属性意思是router-link最后渲染为div, 默认为a -->
     <router-link class="tab-item" tag="div" to="/message" @click.native="changeTitle">
-      <i class="icon-bubble"></i>
+      <img class="tab-img" src="../../common/images/message.png"/>
       <span class="tab-link">消息</span>
     </router-link>
     <router-link class="tab-item" tag="div" to="/contact" @click.native="changeTitle"> 
-      <i class="icon-user"></i>
+      <img class="tab-img" src="../../common/images/friends.png"/>
       <span class="tab-link">联系人</span>
     </router-link>
     <router-link class="tab-item" tag="div" to="/news" @click.native="changeTitle">
-      <i class="icon-eye"></i>
+      <img class="tab-img" src="../../common/images/news.png"/>
       <span class="tab-link">新闻</span>
     </router-link>
     <router-link class="tab-item" tag="div" to="/dynamic" @click.native="changeTitle">
-      <i class="icon-star"></i>
+      <img class="tab-img" src="../../common/images/star.png"/>
       <span class="tab-link">动态</span>
     </router-link>
   </div>
@@ -52,12 +52,13 @@
       flex-direction: column
       justify-content: center
       align-items: center 
-      i 
-        padding: 8px
-        font-size: $font-size-large
       .tab-link
         padding-bottom: 5px
-        color: $color-text-d
+        color: $color-text-bl
+      .tab-img
+        width: 20px
+        height: 20px
+        margin: 3px
       &.router-link-active
         border-bottom: 2px solid $color-text-b
         .tab-link, i

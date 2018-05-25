@@ -4,9 +4,7 @@
       <img src="./user.jpg" width="40" height="40"/>
     </div>
     <h2 class="title"> {{title}} </h2>
-    <div>
-      <i class="icon-settings"></i>
-    </div>
+    <img class="head-img" width="30" height="30" src="../../common/images/add.png"/>
   </div>
 </template>
 
@@ -47,7 +45,6 @@
     h2
       font-size: $font-size-large
       font-weight: 100
-    i 
+    .head-img
       margin-right: 10px
-      font-size: $font-size-large
 </style>

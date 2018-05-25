@@ -71,11 +71,11 @@
         margin-bottom: 5px
       .friendmessage
         font-size: $font-size-medium
-        color: $color-text-d
+        color: $color-text-bl
     .time
       position: absolute
       top: 10px
       right: 10px
       font-size: $font-size-small
-      color: $color-text-d
+      color: $color-text-bl
 </style>
