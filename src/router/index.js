@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Main from 'components/main/main'
 import Message from 'components/message/message'
 import Contact from 'components/contact/contact'
 import News from 'components/news/news'
@@ -12,23 +13,37 @@ export default new Router({
   routes: [
     {
       path: '/login',
-      component: Login
+      components: {
+        login: Login
+      }
     },
     {
-      path: '/message',
-      component: Message
-    },
-    {
-      path: '/contact',
-      component: Contact
-    },
-    {
-      path: '/news',
-      component: News
-    },
-    {
-      path: '/dynamic',
-      component: Dynamic
+      path: '/',
+      components: {
+        main: Main
+      },
+      children: [
+        {
+          path: '/',
+          redirect: 'message'
+        },
+        {
+          path: 'message',
+          component: Message
+        },
+        {
+          path: 'contact',
+          component: Contact
+        },
+        {
+          path: 'news',
+          component: News
+        },
+        {
+          path: 'dynamic',
+          component: Dynamic
+        }
+      ]
     }
   ]
 })

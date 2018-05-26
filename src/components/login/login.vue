@@ -2,10 +2,10 @@
   <div class="login">
     <form class="form" @submit.prevent="submit">
       <div class="input-container border-1px">
-        <input class="account border-1px" type="text" placeholder="账号">
+        <input class="account border-1px" v-model="account" type="text" placeholder="账号">
       </div>
       <div class="input-container border-1px">
-        <input class="password border-1px" type="text" placeholder="密码">
+        <input class="password border-1px" v-model="password" type="text" placeholder="密码">
       </div>
       <div class="btn-container">
         <input class="submitBtn" type="submit" value="登录">
@@ -19,7 +19,27 @@
 </template>
 
 <script type="text/ecmascript-6">
-  export default {}
+  import axios from 'axios'
+
+  export default {
+    data() {
+      return {
+        account: '',
+        password: ''
+      }
+    },
+    methods: {
+      submit(e) {
+        let data = {
+          account: this.account,
+          password: this.password
+        }
+        axios.post('/login', data).then((res) => {
+          console.log(res)
+        })
+      }
+    }
+  }
 </script>
 
 <style scoped lang='stylus' rel='stylesheet/stylus'>
