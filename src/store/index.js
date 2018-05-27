@@ -11,7 +11,8 @@ export const mutationTypes = {
   FETCH_START: 'FETCH_START',
   FETCH_END: 'FETCH_END',
   USER_LOGIN: 'USER_LOGIN',
-  SET_MESSAGE: 'SET_MESSAGE'
+  SET_MESSAGE: 'SET_MESSAGE',
+  SET_POPUP: 'SET_POPUP'
 }
 
 export default new Vuex.Store({
@@ -23,9 +24,18 @@ export default new Vuex.Store({
     msg: {
       msgType: 0,    
       msgContent: ''
+    },
+    popup: {
+      popLevel: '',
+      popText: ''
     }
   },
   mutations: {
+    [mutationTypes.SET_POPUP](state, payload) {
+      state.popup = {
+        ...payload
+      }
+    },
     [mutationTypes.FETCH_START](state) {
       state.isFetching = true
     },
@@ -35,8 +45,7 @@ export default new Vuex.Store({
     [mutationTypes.SET_MESSAGE](state, payload) {
       state.isFetching = false
       state.msg = {
-        msgType: payload.msgType,
-        msgContent: payload.msgContent
+        ...payload
       }
     }
   },
