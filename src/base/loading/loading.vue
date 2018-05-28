@@ -13,17 +13,25 @@
         default: '正在载入...'
       }
     }
-  };
+  }
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
 
   .loading
-    width: 100%
-    text-align: center
+    position: absolute
+    display: flex
+    top: 0
+    left: 0
+    bottom: 0
+    right: 0
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    background: $color-background-g
     .desc
       line-height: 20px
       font-size: $font-size-small
-      color: $color-text-d
+      color: $color-text
 </style>

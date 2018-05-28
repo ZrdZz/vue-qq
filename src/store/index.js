@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import axios from 'axios'
+import axios from 'axios'
 import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
@@ -21,10 +21,10 @@ export default new Vuex.Store({
     isFetching: false,
     userInfo: {},
     // 0成功, 1失败
-    msg: {
-      msgType: 0,    
-      msgContent: ''
-    },
+    // msg: {
+    //   msgType: 0,    
+    //   msgContent: ''
+    // },
     popup: {
       popLevel: '',
       popText: ''
@@ -41,18 +41,36 @@ export default new Vuex.Store({
     },
     [mutationTypes.FETCH_END](state) {
       state.isFetching = false
-    },
-    [mutationTypes.SET_MESSAGE](state, payload) {
-      state.isFetching = false
-      state.msg = {
-        ...payload
-      }
     }
+    // [mutationTypes.SET_MESSAGE](state, payload) {
+    //   state.isFetching = false
+    //   state.msg = {
+    //     ...payload
+    //   }
+    // }
   },
   actions: {
-    async login({commit}, {account, password}) {
+    async login({commit}, payload) {
       commit(mutationTypes.FETCH_START)
-      // let res = await axios.put('/login', {account, password})
+      try {
+        let res = await axios.post('/login', payload)
+        return res
+      } catch (e) {
+        console.log(e)
+      } finally {
+        commit(mutationTypes.FETCH_END)
+      }
+    },
+    async register({commit}, payload) {
+      commit(mutationTypes.FETCH_START)
+      try {
+        let res = await axios.post('/register', payload)
+        return res
+      } catch (e) {
+        console.log(e)
+      } finally {
+        commit(mutationTypes.FETCH_END)
+      }      
     }
   },
   strict: debug,

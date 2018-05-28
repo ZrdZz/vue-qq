@@ -5,7 +5,7 @@
         <input class="account border-1px" v-model="account" type="text" placeholder="账号">
       </div>
       <div class="input-container border-1px">
-        <input class="password border-1px" v-model="password" type="text" placeholder="密码">
+        <input class="password border-1px" v-model="password" type="password" placeholder="密码">
       </div>
       <div class="btn-container">
         <input class="submitBtn" type="submit" value="登录">
@@ -22,10 +22,13 @@
           <input class="nickname border-1px" v-model="nickname" type="text" placeholder="昵称">
         </div>
         <div class="input-container border-1px">
-          <input class="account border-1px" v-model.number="account" type="text" placeholder="账号">
+          <input class="account border-1px" v-model="account" type="text" placeholder="账号">
         </div>
         <div class="input-container border-1px">
-          <input class="password border-1px" v-model="password" type="text" placeholder="密码">
+          <input class="password border-1px" v-model="password" type="password" placeholder="密码">
+        </div>
+        <div class="input-container border-1px">
+          <input class="password border-1px" v-model="rePassword" type="password" placeholder="重复密码">
         </div>
         <div class="btn-container">
           <input class="submitBtn" type="submit" value="注册">
@@ -36,12 +39,14 @@
         <span class="return-text">返回</span>
       </div>
     </div>
+    <loading v-show="isFetching"></loading>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import axios from 'axios'
-  import {mapMutations} from 'vuex'
+  // import axios from 'axios'
+  import Loading from 'base/loading/loading'
+  import {mapState, mapMutations, mapActions} from 'vuex'
 
   export default {
     data() {
@@ -49,32 +54,58 @@
         nickname: '',
         account: '',
         password: '',
+        rePassword: '',
         loginForm: true,
         registerForm: false
       }
     },
+    components: {
+      Loading
+    },
+    computed: mapState([
+      'isFetching'
+    ]),
     methods: {
       submitLogin() {
         let data = {
           account: this.account,
           password: this.password
         }
-        axios.post('/login', data).then((res) => {
-          console.log(res)
-        })
+        this.login(data)
+          .then((res) => {
+            if (res.data.code === 0) {
+              this.popUp({popLevel: 'success', popText: res.data.message})
+            } else {
+              this.popUp({popLevel: 'error', popText: res.data.message})
+            }
+            this.$router.push('/')
+          })
+          .catch((err) => {
+            this.popUp({popLevel: 'error', popText: err})
+          })
       },
       submitRegister() {
         if (!this.validator()) {
           return false
         }
-        // let data = {
-        //   nickname: this.nickname,
-        //   account: this.account,
-        //   password: this.password
-        // }
-        // axios.post('/register', data).then((res) => {
-
-        // })
+        let data = {
+          nickname: this.nickname,
+          account: this.account,
+          password: this.password,
+          rePassword: this.rePassword
+        }
+        this.register(data)
+          .then((res) => {
+            if (res.data.code === 0) {
+              this.popUp({popLevel: 'success', popText: res.data.message})
+            } else {
+              this.popUp({popLevel: 'error', popText: res.data.message})
+            }
+            this.$router.push('/login')
+          })
+          .catch((err) => {
+            this.popUp({popLevel: 'error', popText: err})
+          })
       },
       register() {
         this.loginForm = false
@@ -91,7 +122,7 @@
         this.password = ''
       },
       validator() {
-        if (this.nickname || this.account || this.password) {
+        if (!(this.nickname && this.account && this.password && this.rePassword)) {
           this.popUp({popLevel: 'error', popText: '全部为必填项'})
           return false
         }
@@ -111,11 +142,19 @@
             return false
           }
         }
+        if (this.password !== this.rePassword) {
+          this.popUp({popLevel: 'error', popText: '两次密码不一致'})
+          return false
+        }
         return true
       },
       ...mapMutations({
         popUp: 'SET_POPUP'
-      })
+      }),
+      ...mapActions([
+        'login',
+        'register'
+      ])
     }
   }
 </script>
