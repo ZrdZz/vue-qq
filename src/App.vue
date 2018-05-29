@@ -7,7 +7,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapState} from 'vuex'
+  import {mapState, mapMutations, mapActions} from 'vuex'
   import Popup from 'base/popup/popup'
   
   export default {
@@ -17,6 +17,29 @@
     }),
     components: {
       Popup
+    },
+    methods: {
+      ...mapMutations({
+        popUp: 'SET_POPUP'
+      }),
+      ...mapActions([
+        'autoLogin'
+      ])
+    },
+    created() {
+      this.autoLogin()
+        .then((res) => {
+          if (res.data.code === 0) {
+            this.popUp({popLevel: 'success', popText: res.data.message})
+            this.$router.replace('/message')
+          } else {
+            this.popUp({popLevel: 'error', popText: res.data.message})
+            this.$router.replace('/login')
+          }
+        })
+      .catch((err) => {
+        this.popUp({popLevel: 'error', popText: err})
+      })
     }
   }
 </script>

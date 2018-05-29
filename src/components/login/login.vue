@@ -8,11 +8,11 @@
         <input class="password border-1px" v-model="password" type="password" placeholder="密码">
       </div>
       <div class="btn-container">
-        <input class="submitBtn" type="submit" value="登录">
+        <input class="submitBtn" type="submit" value="登录" :disabled="isDisable">
       </div> 
       <div class="help">
         <span>忘记密码?</span>
-        <span @click="register">新用户注册</span>
+        <span @click="registerPage">新用户注册</span>
       </div>
     </form>
     <div class="register" v-if="registerForm">
@@ -31,7 +31,7 @@
           <input class="password border-1px" v-model="rePassword" type="password" placeholder="重复密码">
         </div>
         <div class="btn-container">
-          <input class="submitBtn" type="submit" value="注册">
+          <input class="submitBtn" type="submit" value="注册" :disabled="isDisable">
         </div> 
       </form>  
       <div class="return" @click="returnLogin">
@@ -47,6 +47,7 @@
   // import axios from 'axios'
   import Loading from 'base/loading/loading'
   import {mapState, mapMutations, mapActions} from 'vuex'
+  import Validator from 'common/js/validator'
 
   export default {
     data() {
@@ -56,7 +57,8 @@
         password: '',
         rePassword: '',
         loginForm: true,
-        registerForm: false
+        registerForm: false,
+        isDisable: false
       }
     },
     components: {
@@ -67,6 +69,14 @@
     ]),
     methods: {
       submitLogin() {
+        this.isDisable = true
+        let verifyData = [
+          [[this.account, this.password], [{strategy: 'isNotEmpty', errorMsg: '账号密码不能为空'}]]
+        ]
+        if (this.validator(verifyData)) {
+          this.isDisable = false
+          return
+        }
         let data = {
           account: this.account,
           password: this.password
@@ -75,18 +85,28 @@
           .then((res) => {
             if (res.data.code === 0) {
               this.popUp({popLevel: 'success', popText: res.data.message})
+              this.$router.push('/message')
             } else {
               this.popUp({popLevel: 'error', popText: res.data.message})
             }
-            this.$router.push('/')
+            this.isDisable = false
           })
           .catch((err) => {
             this.popUp({popLevel: 'error', popText: err})
+            this.isDisable = false
           })
       },
       submitRegister() {
-        if (!this.validator()) {
-          return false
+        this.isDisable = true
+        let verifyData = [
+          [[this.nickname, this.account, this.password, this.rePassword], [{strategy: 'isNotEmpty', errorMsg: '各选项不能为空'}]],
+          [[this.account], [{strategy: 'accountFormat', errorMsg: '账号不合法'}]],
+          [[this.password], [{strategy: 'length:8:12', errorMsg: '密码位数不正确'}, {strategy: 'passwordFormat', errorMsg: '必须包含数字和字母'}]],
+          [[this.password, this.rePassword], [{strategy: 'isEqual', errorMsg: '密码输入不一致'}]]
+        ]
+        if (this.validator(verifyData)) {
+          this.isDisable = false
+          return
         }
         let data = {
           nickname: this.nickname,
@@ -98,16 +118,18 @@
           .then((res) => {
             if (res.data.code === 0) {
               this.popUp({popLevel: 'success', popText: res.data.message})
+              this.returnLogin()
             } else {
               this.popUp({popLevel: 'error', popText: res.data.message})
             }
-            this.$router.push('/login')
+            this.isDisable = false
           })
           .catch((err) => {
             this.popUp({popLevel: 'error', popText: err})
+            this.isDisable = false
           })
       },
-      register() {
+      registerPage() {
         this.loginForm = false
         this.registerForm = true
         this.nickname = ''
@@ -121,32 +143,16 @@
         this.account = ''
         this.password = ''
       },
-      validator() {
-        if (!(this.nickname && this.account && this.password && this.rePassword)) {
-          this.popUp({popLevel: 'error', popText: '全部为必填项'})
-          return false
+      validator(data) {
+        let validator = new Validator()
+        data.map((d) => {
+          validator.add(...d)
+        })
+        let errorMsg = validator.start()
+        if (errorMsg) {
+          this.popUp({popLevel: 'error', popText: errorMsg})
         }
-        // 验证账号
-        if (!/^[1-9][0-9]{7}$/.test(this.account)) {
-          this.popUp({popLevel: 'error', popText: '账号不合法'})
-          return false
-        }
-        // 验证密码
-        if (!/^(\w){8,12}$/.test(this.password)) {
-          this.popUp({popLevel: 'error', popText: '密码位数不合法'})
-          return false
-        } else {
-          // 正则表达式写的有点蠢
-          if (!(this.password.match(/[^0-9]/) && this.password.match(/[^a-zA-Z]/))) {
-            this.popUp({popLevel: 'error', popText: '密码必须包含两种不同的字符'})
-            return false
-          }
-        }
-        if (this.password !== this.rePassword) {
-          this.popUp({popLevel: 'error', popText: '两次密码不一致'})
-          return false
-        }
-        return true
+        return errorMsg
       },
       ...mapMutations({
         popUp: 'SET_POPUP'

@@ -20,11 +20,6 @@ export default new Vuex.Store({
   state: {
     isFetching: false,
     userInfo: {},
-    // 0成功, 1失败
-    // msg: {
-    //   msgType: 0,    
-    //   msgContent: ''
-    // },
     popup: {
       popLevel: '',
       popText: ''
@@ -42,12 +37,6 @@ export default new Vuex.Store({
     [mutationTypes.FETCH_END](state) {
       state.isFetching = false
     }
-    // [mutationTypes.SET_MESSAGE](state, payload) {
-    //   state.isFetching = false
-    //   state.msg = {
-    //     ...payload
-    //   }
-    // }
   },
   actions: {
     async login({commit}, payload) {
@@ -65,6 +54,17 @@ export default new Vuex.Store({
       commit(mutationTypes.FETCH_START)
       try {
         let res = await axios.post('/register', payload)
+        return res
+      } catch (e) {
+        console.log(e)
+      } finally {
+        commit(mutationTypes.FETCH_END)
+      }      
+    },
+    async autoLogin({commit}) {
+      commit(mutationTypes.FETCH_START)
+      try {
+        let res = await axios.get('/autoLogin')
         return res
       } catch (e) {
         console.log(e)

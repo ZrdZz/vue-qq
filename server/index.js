@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const Router = require('koa-router')
 const BodyParser = require('koa-bodyparser')
+const session = require('koa-session')
 const mongoose = require('mongoose')
 
 const config = require('../config/index')
@@ -12,7 +13,9 @@ const router = new Router()
 const HOST = process.env.HOST || config.build.host
 const PORT = process.env.PORT || config.build.port
 
+app.keys = ['some secret hurr']
 app.use(BodyParser())
+app.use(session(app))
 
 router.use('/', main.routes(), main.allowedMethods())
 // router.use('/setting', setting.routes(), setting.allowedMethods())

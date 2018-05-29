@@ -18,6 +18,7 @@ user.post('login', async(ctx) => {
     password = md5(password)
     let user = await User.findOne({account, password})
     if (user) {
+      ctx.session.userInfo = user
       responseClient(ctx, 200, 0, '登录成功')
     } else {
       responseClient(ctx, 400, 1, '用户名或密码错误')
@@ -48,7 +49,7 @@ user.post('register', async(ctx) => {
   try {
     let isRegister = await User.findOne({account})
     if (isRegister) {
-      responseClient(ctx, 200, 1, '用户名已存在')
+      responseClient(ctx, 200, 1, '账号已存在')
       return
     } else {
       password = md5(password)
@@ -67,6 +68,14 @@ user.post('register', async(ctx) => {
     }
   } catch (e) {
     responseClient(ctx)
+  }
+})
+
+user.get('autoLogin', async(ctx) => {
+  if (ctx.session.userInfo) {
+    responseClient(ctx, 200, 0, '已登录')
+  } else {
+    responseClient(ctx, 200, 1, '请重新登陆')
   }
 })
 

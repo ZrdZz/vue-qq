@@ -24,10 +24,6 @@ export default new Router({
       },
       children: [
         {
-          path: '/',
-          redirect: 'message'
-        },
-        {
           path: 'message',
           component: Message
         },
