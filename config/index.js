@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/': "http://localhost:3000"
+      '/': "http://0.0.0.0:3000"
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -57,7 +57,7 @@ module.exports = {
     /**
      * Source Maps
      */
-    host: 'localhost',
+    host: '0.0.0.0',
     port: 3000,
     productionSourceMap: true,
     // https://webpack.js.org/configuration/devtool/#production

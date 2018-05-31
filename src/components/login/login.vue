@@ -47,7 +47,7 @@
   // import axios from 'axios'
   import Loading from 'base/loading/loading'
   import {mapState, mapMutations, mapActions} from 'vuex'
-  import Validator from 'common/js/validator'
+  import validator from 'common/js/validator'
 
   export default {
     data() {
@@ -144,11 +144,7 @@
         this.password = ''
       },
       validator(data) {
-        let validator = new Validator()
-        data.map((d) => {
-          validator.add(...d)
-        })
-        let errorMsg = validator.start()
+        let errorMsg = validator(data)
         if (errorMsg) {
           this.popUp({popLevel: 'error', popText: errorMsg})
         }

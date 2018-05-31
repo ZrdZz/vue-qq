@@ -53,7 +53,7 @@ const strategies = {
   }
 }
 
-export default class Validator {
+class Validator {
   constructor() {
     this.cache = []
   }
@@ -87,4 +87,13 @@ export default class Validator {
       }
     }
   }
+}
+
+export default function validator(data) {
+  let validator = new Validator()
+  data.map((d) => {
+    validator.add(...d)
+  })
+  let errorMsg = validator.start()
+  return errorMsg  
 }

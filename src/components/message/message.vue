@@ -51,6 +51,11 @@
   @import "~common/stylus/variable"
   
 .message
+  position: absolute
+  top: 90px
+  left: 0
+  right: 0
+  bottom: 42px
   .item
     display: flex
     position: relative

@@ -28,10 +28,6 @@
       changeTitle(e) {
         eventHub.$emit('change-title', e.currentTarget.lastChild.innerHTML)
       }
-    },
-    mounted() {
-      let clickLink = document.querySelector('.router-link-active')
-      clickLink.click()
     }
   }
 </script>

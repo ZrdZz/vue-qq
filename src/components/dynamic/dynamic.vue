@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dynamic">
     动态
   </div>
 </template>
@@ -9,5 +9,10 @@
 </script>
 
 <style scoped lang='stylus' rel='stylesheet/stylus'>
-
+  .dynamic  
+    position: absolute
+    top: 90px
+    left: 0
+    right: 0
+    bottom: 42px
 </style>

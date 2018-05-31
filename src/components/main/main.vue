@@ -2,9 +2,11 @@
   <div class="main">
     <q-header></q-header>
     <search></search>
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+    <transition name="fade">
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+    </transition>
     <tab></tab>
   </div>
 </template>
@@ -24,5 +26,14 @@
 </script>
 
 <style scoped lang='stylus' rel='stylesheet/stylus'>
-
+  .main
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+  .fade-enter-active, .fade-leave-active
+    transition: all 0.3s
+  .fade-enter, .fade-leave-to
+    opacity: 0
 </style>
