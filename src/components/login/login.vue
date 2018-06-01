@@ -91,8 +91,8 @@
             }
             this.isDisable = false
           })
-          .catch((err) => {
-            this.popUp({popLevel: 'error', popText: err})
+          .catch(() => {
+            this.popUp({popLevel: 'error', popText: '服务器维护中'})
             this.isDisable = false
           })
       },
@@ -124,8 +124,8 @@
             }
             this.isDisable = false
           })
-          .catch((err) => {
-            this.popUp({popLevel: 'error', popText: err})
+          .catch(() => {
+            this.popUp({popLevel: 'error', popText: '服务器维护中'})
             this.isDisable = false
           })
       },
@@ -174,24 +174,24 @@
     background-image: url('login.jpg')
     background-position: center
     background-size: 200% 100%
-    color: $color-text-d
+    color: $color-white
     .form
       display: flex
       margin-top: 200px
       flex-direction: column
       align-items: center
-      font-size: $font-size-large
+      font-size: $fontsize-large-xx
       .input-container
         width: 80%
-        border-1px($color-text-d)
+        border-1px($color-light-grey)
         .account, .password, .nickname
           width: 100%
           height: 50px
           outline: none
           background: transparent
-          color: $color-text-d
+          color: $color-white
         .account::placeholder, .password::placeholder, .nickname::placeholder
-          color: $color-text-d
+          color: $color-light-grey
       .btn-container
         width: 80%
         .submitBtn
@@ -201,14 +201,14 @@
           border: 1px solid
           border-radius: 5px
           background: transparent
-          color: $color-text-d
+          color: $color-light-cadetblue
       .help
         display: flex
         width: 80%
         margin: 5px auto
         justify-content: space-between
-        font-size: $font-size-medium
-        color: $color-text-b
+        font-size: $fontsize-medium
+        color: $color-light-cadetblue
     .register
       position: fixed
       top: 0
@@ -217,7 +217,7 @@
       right: 0
       .prompt
         width: 80%
-        font-size: $font-size-medium
+        font-size: $fontsize-medium
       .return
         position: absolute
         top: 10px

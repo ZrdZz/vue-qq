@@ -37,8 +37,9 @@
             this.$router.replace('/login')
           }
         })
-      .catch((err) => {
-        this.popUp({popLevel: 'error', popText: err})
+      .catch(() => {
+        this.popUp({popLevel: 'error', popText: '服务器维护中'})
+        // this.$router.replace('/login')
       })
     }
   }

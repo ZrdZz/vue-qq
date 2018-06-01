@@ -62,25 +62,24 @@
     width: 100%
     height: 60px
     align-items: center
-    border-1px($color-background-g)
-    background: $color-background-w
+    border-1px($color-light-grey)
+    background: $color-white
     .icon
       width: 40px
       height: 40px
       margin-left: 10px
-      background: blue
     .text
       margin-left: 10px
       .name
-        font-size: $font-size-medium-x
+        font-size: $fontsize-large
         margin-bottom: 5px
       .friendmessage
-        font-size: $font-size-medium
-        color: $color-text-bl
+        font-size: $fontsize-medium
+        color: $color-light-grey
     .time
       position: absolute
       top: 10px
       right: 10px
-      font-size: $font-size-small
-      color: $color-text-bl
+      font-size: $fontsize-small
+      color: $color-light-grey
 </style>

@@ -5,7 +5,6 @@
     </div>
     <h2 class="title"> {{title}} </h2>
     <img class="head-img" width="30" height="30" src="../../common/images/add.png"/>
-    <setting v-if="isShow"></setting>
   </div>
 </template>
 
@@ -16,8 +15,7 @@
   export default {
     data() {
       return {
-        title: '消息',
-        isShow: false
+        title: '消息'
       }
     },
     methods: {
@@ -25,7 +23,7 @@
         this.title = title
       },
       settingShow() {
-        this.isShow = !this.isShow
+        this.$router.push('/setting')
       }
     },
     components: {

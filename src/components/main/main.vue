@@ -26,12 +26,15 @@
 </script>
 
 <style scoped lang='stylus' rel='stylesheet/stylus'>
+  @import "~common/stylus/variable"  
+  
   .main
     position: fixed
     top: 0
     left: 0
     right: 0
     bottom: 0
+    background: $color-main
   .fade-enter-active, .fade-leave-active
     transition: all 0.3s
   .fade-enter, .fade-leave-to

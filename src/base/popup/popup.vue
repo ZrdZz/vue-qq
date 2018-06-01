@@ -66,18 +66,18 @@
     right: 10px
     border-bottom-left-radius: 5px
     border-bottom-right-radius: 5px
-    background: $color-background-g
+    background: $color-light-greenyellow 
     .level
       margin: 10px
-      font-size: 20px
+      font-size: $fontsize-large-xx
     .text
       margin: 10px
   .success
-    color: $color-success
+    color: $color-dark-deepgreen
   .warnning
-    color: $color-warnning
+    color: $color-light-yellow
   .error
-    color: $color-error
+    color: $color-light-red
   .slide-fade-enter-active, .slide-fade-leave-active {
     transition: all 0.5s;
   }

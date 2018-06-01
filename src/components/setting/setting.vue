@@ -1,10 +1,11 @@
 <template>
   <div class="setting">
-    <div class="title border-1px">
-      <span class="return">
+    <div class="top border-1px">
+      <img>
+      <span class="back" @click="back">
         返回
       </span>
-      <span>
+      <span class="title">
         编辑资料
       </span>
     </div>
@@ -21,24 +22,50 @@
     </div>
     <div class="gender setting-option border-1px">
       <span>性别</span>
-      <input type="radio" value="男" v-model="gender">
-      <input type="radio" value="女" v-model="gender">
+      <label for="man">男</label>
+      <input id="man" type="radio" value="男" v-model="gender">
+      <label for="women">女</label>
+      <input id="women" type="radio" value="女" v-model="gender">
     </div>
     <div class="birthday setting-option border-1px">
-      <span>出生日期</span>
+      <span>生日</span>
     </div>
     <div class="location setting-option border-1px">
-      <span>所在地</span>
+      <span>地点</span>
+      <city-picker></city-picker>
+    </div>
+    <div class="career setting-option border-1px">
+      <span>职业</span>
+    </div>
+    <div class="company setting-option border-1px">
+      <span>公司</span>
+      <input type="text" v-model="company" class="company-input" placeholder="请填写全名">
+    </div>
+    <div class="university setting-option border-1px">
+      <span>学校</span>
+      <input type="text" v-model="university" class="university-input" placeholder="请填写全名">
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import CityPicker from 'components/citypicker/citypicker'
+
   export default {
     data() {
       return {
         nickname: '',
-        gender: ''
+        gender: '',
+        company: '',
+        university: ''
+      }
+    },
+    components: {
+      CityPicker
+    },
+    methods: {
+      back() {
+        this.$router.back()
       }
     }
   }
@@ -57,18 +84,28 @@
     right: 0
     bottom: 0
     z-index: 100
-    background: $color-background-g
+    background: $color-light-grey-sss
     color: #000
-    .title
-      height: 35px
-      line-height: 35px
+    .top
+      position: relative
+      height: 40px
+      line-height: 40px
+      padding-left: 20px
       border-1px(#000)
+      .title
+        position: absolute
+        left: 50%
+        transform: translate(-50%)
     .setting-option
       height: 45px
       line-height: 45px
       padding-left: 20px
       border-1px(#000)
-      background: $color-background-w
+      background: $color-white
+      span 
+        padding-right: 50px
+      input 
+        outline: none
     .avatar
       display: flex
       height: 50px
@@ -84,12 +121,11 @@
           height: 100%
           text-align: center
           line-height: 50px
+          padding-right: 0
           border-radius: 10px
-          background: $color-background-b
+          background: $color-light-cadetblue
         .inputfile
           opacity: 0
-    .nickname
-      .nickname-input
-        margin-left: 10px
-        outline: none
+    .location
+      display
 </style>

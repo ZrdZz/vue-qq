@@ -1,6 +1,6 @@
 <template>
   <div class="search"> 
-    <i class="icon-search"></i>
+    <span class="icon-search"></span>
     搜索 
   </div>
 </template>
@@ -19,9 +19,8 @@
     margin: 5px auto
     text-align: center
     border-radius: 5px
-    font-size: $font-size-medium
-    background: $color-background-g
-    color: $color-background-gg
+    font-size: $fontsize-medium
+    background: $color-light-grey-sss
     i 
       display: inline-block
       vertical-align: text-bottom

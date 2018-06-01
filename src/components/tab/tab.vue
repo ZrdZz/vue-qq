@@ -26,6 +26,7 @@
   export default {
     methods: {
       changeTitle(e) {
+        console.log(11)
         eventHub.$emit('change-title', e.currentTarget.lastChild.innerHTML)
       }
     }
@@ -40,8 +41,8 @@
     position: absolute
     bottom: 0
     width: 100%
-    font-size: $font-size-small-s
-    background: $color-background-w
+    font-size: $fontsize-small
+    background: $color-white
     .tab-item
       display: flex
       flex: 1
@@ -50,13 +51,13 @@
       align-items: center 
       .tab-link
         padding-bottom: 5px
-        color: $color-text-bl
+        color: $color-light-grey
       .tab-img
         width: 20px
         height: 20px
         margin: 3px
       &.router-link-active
-        border-bottom: 2px solid $color-text-b
+        border-bottom: 2px solid $color-main-l
         .tab-link, i
-          color: $color-text-b
+          color: $color-main-l
 </style>

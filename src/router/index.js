@@ -6,6 +6,7 @@ import Contact from 'components/contact/contact'
 import News from 'components/news/news'
 import Dynamic from 'components/dynamic/dynamic'
 import Login from 'components/login/login'
+import Setting from 'components/setting/setting'
 
 Vue.use(Router)
 
@@ -38,6 +39,10 @@ export default new Router({
         {
           path: 'dynamic',
           component: Dynamic
+        },
+        {
+          path: 'setting',
+          component: Setting
         }
       ]
     }
