@@ -29,13 +29,31 @@
     </div>
     <div class="birthday setting-option border-1px">
       <span>生日</span>
+      <input type="text" placeholder="例: 1997/01/13" v-model="birthday">
     </div>
-    <div class="location setting-option border-1px">
+    <div class="city setting-option border-1px">
       <span>地点</span>
-      <city-picker></city-picker>
+      <city-picker @city="city = city"></city-picker>
     </div>
     <div class="career setting-option border-1px">
       <span>职业</span>
+      <select v-model="career">
+        <option disabled value="">请选择</option>
+        <option>计算机/互联网/通信</option>
+        <option>生产/工艺/制造</option>
+        <option>医疗/护理/制药</option>
+        <option>金融/银行/投资/保险</option>
+        <option>商业/服务业/个体经营</option>
+        <option>文化/广告/传媒</option>
+        <option>娱乐/艺术/表演</option>
+        <option>律师/法务</option>
+        <option>教育/法务</option>
+        <option>公务员/行政/事业单位</option>
+        <option>模特</option>
+        <option>空姐</option>
+        <option>学生</option>
+        <option>其他职业</option>
+      </select>
     </div>
     <div class="company setting-option border-1px">
       <span>公司</span>
@@ -54,8 +72,12 @@
   export default {
     data() {
       return {
+        avatar: '',
         nickname: '',
         gender: '',
+        birthday: '',
+        city: '',
+        career: '',
         company: '',
         university: ''
       }
@@ -104,7 +126,7 @@
       background: $color-white
       span 
         padding-right: 50px
-      input 
+      input
         outline: none
     .avatar
       display: flex
@@ -126,6 +148,10 @@
           background: $color-light-cadetblue
         .inputfile
           opacity: 0
-    .location
-      display
+    .career
+      select 
+        font-size: $fontsize-large
+        appearance: none
+        outline: none
+        border: none
 </style>

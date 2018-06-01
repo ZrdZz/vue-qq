@@ -1,6 +1,6 @@
 <template>
   <div class="citypicker">
-    <p @click="show" ref="location">点击选择</p>
+    <p @click="show" ref="city">点击选择</p>
     <picker @select="handleSelect(arguments)" :data="data" 
             :selected-index="selectedIndex" ref="picker" :title="title" 
             @change="handleChange" :cancelTxt="cancelTxt" :confirmTxt="confirmTxt"></picker>
@@ -44,11 +44,13 @@
         this.$refs.picker.show()
       },
       handleSelect(args) {
-        let location = args[2]
-        if (location[0] === location[1]) {
-          location.splice(0, 1)
+        let city = args[2]
+        if (city[0] === city[1]) {
+          city.splice(0, 1)
         }
-        this.$refs.location.innerHTML = location.join('/')
+        city = city.join('/')
+        this.$refs.city.innerHTML = city
+        this.$emit('city', city)
       },
       handleChange(i, newIndex) {
         if (newIndex !== this.tempIndex[i]) {
