@@ -29,9 +29,10 @@
     justify-content: center
     align-items: center
     flex-direction: column
-    background: $color-background-g
+    background: $color-dark-grey
+    opacity: 0.5
     .desc
       line-height: 20px
-      font-size: $font-size-small
-      color: $color-text
+      font-size: $fontsize-small
+      color: $color-white
 </style>

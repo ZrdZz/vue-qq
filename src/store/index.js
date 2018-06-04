@@ -16,10 +16,9 @@ export const mutationTypes = {
 }
 
 export default new Vuex.Store({
-  // 全局状态, 包括用户信息、请求状态、响应消息
+  // 全局状态, 包括请求状态、响应消息
   state: {
     isFetching: false,
-    userInfo: {},
     popup: {
       popLevel: '',
       popText: ''

@@ -10,10 +10,10 @@
       </span>
     </div>
     <div class="avatar setting-option border-1px">
-      <img src='../../common/images/default.png' width="50" height="50">
+      <img src='../../common/images/default.png' width="50" height="50" ref="img">
       <div class="upload">
         <span class="text">上传头像</span>
-        <input type="file" accept="image/*" class="inputfile">
+        <input type="file" accept="image/*" class="inputfile" @change="readFile()">
       </div>
     </div>
     <div class="nickname setting-option border-1px">
@@ -63,11 +63,15 @@
       <span>学校</span>
       <input type="text" v-model="university" class="university-input" placeholder="请填写全名">
     </div>
+    <div class="btn" @click="save">保存</div> 
+    <loading v-show="isFetching"></loading>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapMutations} from 'vuex'
   import CityPicker from 'components/citypicker/citypicker'
+  import Loading from 'base/loading/loading'
 
   export default {
     data() {
@@ -83,12 +87,37 @@
       }
     },
     components: {
-      CityPicker
+      CityPicker,
+      Loading
     },
     methods: {
       back() {
         this.$router.back()
-      }
+      },
+      readFile() {
+        let inputfile = document.querySelector('.inputfile')
+        let file = inputfile.files[0]
+        // 1MB = 1024KB = 1024*1024B(1MB和1Mb不一样, )
+        if (file.size > 2 * 1024 * 1024) {
+          this.popUp({popLevel: 'error', popText: '上传图片大于2M, 请重新选择'})
+          return 
+        }
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        let self = this
+        reader.onload = function() {
+          self.$refs.img.src = this.result
+        }
+        reader.onerror = function() {
+          self.popUp({popLevel: 'error', popText: '上传出错, 请重新上传'})
+        }
+      },
+      save() {
+
+      },
+      ...mapMutations({
+        popUp: 'SET_POPUP'
+      })
     }
   }
 </script>
@@ -154,4 +183,12 @@
         appearance: none
         outline: none
         border: none
+    .btn
+      width: 100px
+      height: 30px
+      margin: 10px auto
+      line-height: 30px
+      text-align: center
+      border-radius: 5px
+      background: $color-light-cadetblue
 </style>

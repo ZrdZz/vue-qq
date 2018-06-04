@@ -1,7 +1,7 @@
 // 弹窗组件, 传入属性为等级popLevel、内容poptext和持续时间duration, 等级为success、warnning、error, 默认持续时间是1秒
 
 <template>
-  <transition name="slide-fade">
+  <transition name="slide-fade" @after-enter="afterEnter" @after-leave="afterLeave">
     <div class="popup" v-show="isShow" :class="color"> 
       <h1 class="level"> {{popLevel}} </h1>
       <p class="text"> {{popText}} </p>
@@ -13,6 +13,11 @@
   import {mapMutations} from 'vuex'
 
   export default {
+    data() {
+      return {
+        flag: true
+      }
+    },
     props: {
       popText: {
         type: String,
@@ -29,7 +34,11 @@
     },
     computed: {
       isShow() {
-        return this.popLevel && this.popText
+        if (this.popLevel && this.popText && this.flag) {
+          return true
+        } else {
+          return false
+        }
       },
       color() {
         switch (this.popLevel) {
@@ -45,13 +54,16 @@
     methods: {
       ...mapMutations({
         popUp: 'SET_POPUP'
-      })
-    },
-    // 这里有个小问题, 弹窗出来后会执行update, 消失后还会执行, 也就是说会执行两次
-    updated() {
-      setTimeout(() => {
+      }),
+      afterEnter() {
+        setTimeout(() => {
+          this.flag = false
+        }, this.duration)
+      },
+      afterLeave() {
         this.popUp({popLevel: '', popText: ''})
-      }, this.duration)
+        this.flag = true
+      }
     }
   }
 </script>
@@ -79,7 +91,7 @@
   .error
     color: $color-light-red
   .slide-fade-enter-active, .slide-fade-leave-active {
-    transition: all 0.5s;
+    transition: all 0.3s;
   }
   .slide-fade-enter, .slide-fade-leave-to {
     transform: translate3d(0, -100%, 0)
