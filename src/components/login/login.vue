@@ -45,6 +45,7 @@
 
 <script type="text/ecmascript-6">
   // import axios from 'axios'
+  import Vue from 'vue'
   import Loading from 'base/loading/loading'
   import {mapState, mapMutations, mapActions} from 'vuex'
   import validator from 'common/js/validator'
@@ -85,6 +86,7 @@
           .then((res) => {
             if (res.data.code === 0) {
               this.popUp({popLevel: 'success', popText: res.data.message})
+              Vue.prototype.account = res.data.data.account
               this.$router.push('/message')
             } else {
               this.popUp({popLevel: 'error', popText: res.data.message})

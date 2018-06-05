@@ -19,7 +19,7 @@ user.post('login', async(ctx) => {
     let user = await User.findOne({account, password})
     if (user) {
       ctx.session.userInfo = user
-      responseClient(ctx, 200, 0, '登录成功')
+      responseClient(ctx, 200, 0, '登录成功', user)
     } else {
       responseClient(ctx, 400, 1, '用户名或密码错误')
     }

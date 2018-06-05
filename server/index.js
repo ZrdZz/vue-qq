@@ -7,8 +7,8 @@ const koaStatic = require('koa-static')
 const mongoose = require('mongoose')
 
 const config = require('../config/index')
-const main = require('./api/main')
-// const setting = require('./api/setting')
+const main = require('./main/index')
+// const feature = require('./api/setting')
 
 const app = new Koa()
 const router = new Router()
@@ -21,7 +21,7 @@ app.use(bodyParser())
 app.use(session(app))
 
 router.use('/', main.routes(), main.allowedMethods())
-// router.use('/setting', setting.routes(), setting.allowedMethods())
+// router.use('/feature', feature.routes(), feature.allowedMethods())
 
 app.use(router.routes()).use(router.allowedMethods())
 
