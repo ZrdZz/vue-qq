@@ -34,7 +34,7 @@
       </div>
       <div class="city setting-option border-1px">
         <span>地点</span>
-        <city-picker @city="userInfo.city = city"></city-picker>
+        <city-picker @city="selectCity"></city-picker>
       </div>
       <div class="career setting-option border-1px">
         <span>职业</span>
@@ -76,6 +76,7 @@
   import {mapState, mapMutations, mapActions} from 'vuex'
   import CityPicker from 'components/citypicker/citypicker'
   import Loading from 'base/loading/loading'
+  import {saveToLocal} from 'common/js/store'
 
   export default {
     data() {
@@ -92,9 +93,10 @@
         }
       }
     },
-    computed: mapState([
-      'xUserInfo'
-    ]),
+    computed: mapState({
+      isFetching: 'isFetching',
+      xUserInfo: 'userInfo'
+    }),
     components: {
       CityPicker,
       Loading
@@ -102,6 +104,9 @@
     methods: {
       back() {
         this.$router.back()
+      },
+      selectCity(city) {
+        this.userInfo.city = city
       },
       readFile() {
         let inputfile = document.querySelector('.inputfile')
@@ -116,7 +121,7 @@
         let self = this
         reader.onload = function() {
           self.$refs.img.src = this.result
-          this.userInfo.avatar = this.result
+          self.userInfo.avatar = this.result
         }
         reader.onerror = function() {
           self.popUp({popLevel: 'error', popText: '上传出错, 请重新上传'})
@@ -126,20 +131,21 @@
         let keys = Object.keys(this.userInfo)
         // 将改变的信息过滤出来
         let changedKey = keys.filter((key) => {
-          this.userInfo[key] !== this.xUserInfo[key]
+          return this.userInfo[key] !== this.xUserInfo[key]
         })
         let changedUserInfo = {}
         changedKey.map((key) => {
           changedUserInfo[key] = this.userInfo[key]
         })
         let data = {
-          account: this.account,
           ...changedUserInfo
         }
         this.userSetting(data)
           .then((res) => {
             if (res.data.code === 0) {
               this.popUp({popLevel: 'success', popText: res.data.message})
+              saveToLocal(res.data.data, true)
+              this.setUserInfo({...res.data.data})
             } else {
               this.popUp({popLevel: 'error', popText: res.data.message})
             }
@@ -149,14 +155,15 @@
           })
       },
       ...mapMutations({
-        popUp: 'SET_POPUP'
+        popUp: 'SET_POPUP',
+        setUserInfo: 'SET_USERINFO'
       }),
       ...mapActions([
         'userSetting'
-      ]),
-      created() {
-        // 从localstorage中取出信息更新city
-      }
+      ])
+    },      
+    created() {
+      // 从localstorage中取出信息更新city
     }
   }
 </script>
@@ -222,7 +229,7 @@
         appearance: none
         outline: none
         border: none
-    .btn
+    .btn-container
       width: 100px
       height: 30px
       margin: 10px auto
@@ -230,4 +237,6 @@
       text-align: center
       border-radius: 5px
       background: $color-light-cadetblue
+      .submitBtn
+        background: transparent
 </style>

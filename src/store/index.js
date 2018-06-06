@@ -36,7 +36,7 @@ export default new Vuex.Store({
       state.isFetching = false
     },
     [mutationTypes.SET_USERINFO](state, payload) {
-      state.userInfo = {...payload}
+      state.userInfo = {...state.userInfo, ...payload}
     }
   },
   actions: {
@@ -44,9 +44,15 @@ export default new Vuex.Store({
       commit(mutationTypes.FETCH_START)
       try {
         let res = await axios.post('/login', payload)
+        if (res && res.data.code === 0) {
+          commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.data.message})
+          commit(mutationTypes.SET_USERINFO, {account: res.data.data.account})
+        } else {
+          commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
+        }
         return res
       } catch (e) {
-        console.log(e)
+        commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: '用户名或密码错误'})
       } finally {
         commit(mutationTypes.FETCH_END)
       }
@@ -55,9 +61,15 @@ export default new Vuex.Store({
       commit(mutationTypes.FETCH_START)
       try {
         let res = await axios.post('/register', payload)
+        if (res && res.data.code === 0) {
+          commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.data.message})
+          commit(mutationTypes.SET_USERINFO, {account: res.data.data.account})
+        } else {
+          commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
+        }
         return res
       } catch (e) {
-        console.log(e)
+        commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: '注册失败'})
       } finally {
         commit(mutationTypes.FETCH_END)
       }      
@@ -83,7 +95,7 @@ export default new Vuex.Store({
             id: account
           }
         }
-        if(JSON.stringify(state.userInfo) === '{}') {
+        if (state.userInfo.account && (Object.keys(state.userInfo).length === 1)) {
           res = await axios.post('/setting', payload, config)
         } else {
           res = await axios.put('/setting', payload, config)

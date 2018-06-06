@@ -45,10 +45,10 @@
 
 <script type="text/ecmascript-6">
   // import axios from 'axios'
-  import Vue from 'vue'
   import Loading from 'base/loading/loading'
   import {mapState, mapMutations, mapActions} from 'vuex'
   import validator from 'common/js/validator'
+  import {saveToLocal} from 'common/js/store'
 
   export default {
     data() {
@@ -84,16 +84,13 @@
         }
         this.login(data)
           .then((res) => {
-            if (res.data.code === 0) {
-              this.popUp({popLevel: 'success', popText: res.data.message})
-              Vue.prototype.account = res.data.data.account
+            if (res && res.data.code === 0) {
+              saveToLocal(res.data.data)
               this.$router.push('/message')
-            } else {
-              this.popUp({popLevel: 'error', popText: res.data.message})
             }
             this.isDisable = false
           })
-          .catch(() => {
+          .catch((e) => {
             this.popUp({popLevel: 'error', popText: '服务器维护中'})
             this.isDisable = false
           })
@@ -118,15 +115,12 @@
         }
         this.register(data)
           .then((res) => {
-            if (res.data.code === 0) {
-              this.popUp({popLevel: 'success', popText: res.data.message})
+            if (res && res.data.code === 0) {
               this.returnLogin()
-            } else {
-              this.popUp({popLevel: 'error', popText: res.data.message})
             }
             this.isDisable = false
           })
-          .catch(() => {
+          .catch((e) => {
             this.popUp({popLevel: 'error', popText: '服务器维护中'})
             this.isDisable = false
           })
@@ -137,11 +131,11 @@
         this.nickname = ''
         this.account = ''
         this.password = ''
+        this.rePassword = ''
       },
       returnLogin() {
         this.loginForm = true
         this.registerForm = false
-        this.nickname = ''
         this.account = ''
         this.password = ''
       },
@@ -153,7 +147,8 @@
         return errorMsg
       },
       ...mapMutations({
-        popUp: 'SET_POPUP'
+        popUp: 'SET_POPUP',
+        setUserInfo: 'SET_USERINFO'
       }),
       ...mapActions([
         'login',
