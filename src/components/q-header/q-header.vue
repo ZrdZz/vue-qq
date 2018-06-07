@@ -10,7 +10,7 @@
 
 <script type="text/ecmascript-6">
   import Setting from 'components/setting/setting'
-  import eventHub from '../../eventHub'
+  import eventHub from 'src/eventHub'
 
   export default {
     data() {

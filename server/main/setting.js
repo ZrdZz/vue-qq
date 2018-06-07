@@ -6,19 +6,38 @@ const {responseClient} = require('../util.js')
 const setting = new Router()
 
 setting.post('setting', async(ctx) => {
-  let account = ctx.request.query.account
+  let account = ctx.request.query.id
   let userInfo = ctx.request.body
+
   try {
-    let userInfo = new UserSetting({...userInfo})
-    let newUserInfo = await userInfo.save()
-    responseClient(ctx, 200, 0, '保存成功', newUserInfo)
+    let userSetting = await UserSetting.create({...userInfo})
+    let user = await User.findOne({account: account})
+    user.setting = userSetting
+    let newUser = await user.save()
+    if (newUser) {
+      responseClient(ctx, 200, 0, '保存成功', {...userInfo, setting_id: userSetting._id})
+    } else {
+      responseClient(ctx)
+    }
   } catch (e) {
     responseClient(ctx)
   }
 })
 
 setting.put('setting', async(ctx) => {
+  let setting_id = ctx.request.query.id
+  let userSetting = ctx.request.body
 
+  try {
+    let setting = await UserSetting.update({_id: setting_id}, {...userSetting}).exec()
+    if (setting) {
+      responseClient(ctx, 200, 0, '保存成功')
+    } else {
+      responseClient(ctx)
+    }
+  } catch (e) {
+    responseClient(ctx)
+  }
 })
 
 module.exports = setting

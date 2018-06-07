@@ -16,7 +16,7 @@ user.post('login', async(ctx) => {
   }
   try {
     password = md5(password)
-    let user = await User.findOne({account, password})
+    let user = await User.findOne({account, password}).select({nickname: 1, account: 1, _id: 0})
     if (user) {
       ctx.session.userInfo = user
       responseClient(ctx, 200, 0, '登录成功', user)
@@ -53,12 +53,7 @@ user.post('register', async(ctx) => {
       return
     } else {
       password = md5(password)
-      let user = new User({
-        nickname,
-        account,
-        password
-      })
-      let newUser = await user.save()
+      let newUser = await User.create({nickname, account, password})
       let data = {
         nickname: newUser.nickname,
         account: newUser.account,

@@ -8,7 +8,7 @@
         <input class="password border-1px" v-model="password" type="password" placeholder="密码">
       </div>
       <div class="btn-container">
-        <input class="submitBtn" type="submit" value="登录" :disabled="isDisable">
+        <input class="submitBtn" type="submit" value="登录">
       </div> 
       <div class="help">
         <span>忘记密码?</span>
@@ -31,7 +31,7 @@
           <input class="password border-1px" v-model="rePassword" type="password" placeholder="重复密码">
         </div>
         <div class="btn-container">
-          <input class="submitBtn" type="submit" value="注册" :disabled="isDisable">
+          <input class="submitBtn" type="submit" value="注册">
         </div> 
       </form>  
       <div class="return" @click="returnLogin">
@@ -58,8 +58,7 @@
         password: '',
         rePassword: '',
         loginForm: true,
-        registerForm: false,
-        isDisable: false
+        registerForm: false
       }
     },
     components: {
@@ -70,12 +69,10 @@
     ]),
     methods: {
       submitLogin() {
-        this.isDisable = true
         let verifyData = [
           [[this.account, this.password], [{strategy: 'isNotEmpty', errorMsg: '账号密码不能为空'}]]
         ]
         if (this.validator(verifyData)) {
-          this.isDisable = false
           return
         }
         let data = {
@@ -88,15 +85,12 @@
               saveToLocal(res.data.data)
               this.$router.push('/message')
             }
-            this.isDisable = false
           })
           .catch((e) => {
             this.popUp({popLevel: 'error', popText: '服务器维护中'})
-            this.isDisable = false
           })
       },
       submitRegister() {
-        this.isDisable = true
         let verifyData = [
           [[this.nickname, this.account, this.password, this.rePassword], [{strategy: 'isNotEmpty', errorMsg: '各选项不能为空'}]],
           [[this.account], [{strategy: 'accountFormat', errorMsg: '账号不合法'}]],
@@ -104,7 +98,6 @@
           [[this.password, this.rePassword], [{strategy: 'isEqual', errorMsg: '密码输入不一致'}]]
         ]
         if (this.validator(verifyData)) {
-          this.isDisable = false
           return
         }
         let data = {
@@ -118,11 +111,9 @@
             if (res && res.data.code === 0) {
               this.returnLogin()
             }
-            this.isDisable = false
           })
           .catch((e) => {
             this.popUp({popLevel: 'error', popText: '服务器维护中'})
-            this.isDisable = false
           })
       },
       registerPage() {

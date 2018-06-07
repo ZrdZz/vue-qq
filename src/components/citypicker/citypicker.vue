@@ -1,6 +1,6 @@
 <template>
   <div class="citypicker">
-    <p @click="show" ref="city">点击选择</p>
+    <p @click="show" ref="city"> 选择城市 </p>
     <picker @select="handleSelect(arguments)" :data="data" 
             :selected-index="selectedIndex" ref="picker" :title="title" 
             @change="handleChange" :cancelTxt="cancelTxt" :confirmTxt="confirmTxt"></picker>
@@ -10,6 +10,7 @@
 <script type="text/ecmascript-6">
   import Picker from 'base/picker/picker'
   import {provinceList, cityList, areaList} from 'components/citypicker/data'
+  import eventHub from 'src/eventHub'
 
   export default {
     name: 'city-picker',
@@ -60,7 +61,15 @@
           }
           this.tempIndex.splice(i, 1, newIndex)
         }
+      },
+      selectedCity(city) {
+        this.$refs.city.innerHTML = city
       }
+    },
+    mounted() {
+      this.$nextTick(() => {
+        eventHub.$on('selectedCity', this.selectedCity)
+      })
     }
   }
 </script>

@@ -21,12 +21,11 @@
 </template>
 
 <script>
-  import eventHub from '../../eventHub'
+  import eventHub from 'src/eventHub'
 
   export default {
     methods: {
       changeTitle(e) {
-        console.log(11)
         eventHub.$emit('change-title', e.currentTarget.lastChild.innerHTML)
       }
     }

@@ -68,7 +68,7 @@
         <input class="submitBtn" type="submit" value="保存">
       </div> 
     </form>
-    <loading v-show="isFetching"></loading>
+    <loading v-show="isFetching" title="正在保存..."></loading>
   </div>
 </template>
 
@@ -76,7 +76,8 @@
   import {mapState, mapMutations, mapActions} from 'vuex'
   import CityPicker from 'components/citypicker/citypicker'
   import Loading from 'base/loading/loading'
-  import {saveToLocal} from 'common/js/store'
+  import {saveToLocal, loadFromLocal} from 'common/js/store'
+  import eventHub from 'src/eventHub'
 
   export default {
     data() {
@@ -138,16 +139,13 @@
           changedUserInfo[key] = this.userInfo[key]
         })
         let data = {
+          setting_id: this.xUserInfo.setting_id,
           ...changedUserInfo
         }
         this.userSetting(data)
           .then((res) => {
-            if (res.data.code === 0) {
-              this.popUp({popLevel: 'success', popText: res.data.message})
+            if (res && res.data.code === 0) {
               saveToLocal(res.data.data, true)
-              this.setUserInfo({...res.data.data})
-            } else {
-              this.popUp({popLevel: 'error', popText: res.data.message})
             }
           })
           .catch(() => {
@@ -163,7 +161,18 @@
       ])
     },      
     created() {
-      // 从localstorage中取出信息更新city
+      // 从localstorage中加载数据来更新setting表
+      let user = loadFromLocal()
+      let keys = Object.keys(this.userInfo)
+      // 这里要用nextTick, 是因为这里在created发出一个事件, 在citypicker中是在mounted中接受的, 但是这样是接受不到的
+      this.$nextTick(() => {
+        keys.map((key) => {
+          if (key === 'city') {
+            eventHub.$emit('selectedCity', user[key])
+          }
+          this.userInfo[key] = user[key]
+        })
+      })
     }
   }
 </script>

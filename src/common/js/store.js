@@ -15,5 +15,6 @@ export function loadFromLocal() {
   if (!user) {
     return ''
   }
+  user = JSON.parse(user)
   return user
 }
