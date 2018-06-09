@@ -46,7 +46,7 @@ export default new Vuex.Store({
         let res = await axios.post('/login', payload)
         if (res && res.data.code === 0) {
           commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.data.message})
-          commit(mutationTypes.SET_USERINFO, {account: res.data.data.account})
+          commit(mutationTypes.SET_USERINFO, {...res.data.data})
         } else {
           commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
         }
@@ -90,8 +90,8 @@ export default new Vuex.Store({
       try {
         let res = null
         let {account} = state.userInfo
-        // 没有设置信息前只有nickname和account, 所以是创建应用post
-        if ((Object.keys(state.userInfo).length <= 2)) {
+        // 没有设置信息前只有account, 所以是创建, 应用post
+        if ((Object.keys(state.userInfo).length <= 1)) {
           res = await axios.post('/setting', payload, {params: {id: account}})
         } else {
           res = await axios.put('/setting', payload, {params: {id: payload.setting_id}})

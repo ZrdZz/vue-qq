@@ -48,7 +48,7 @@
   import Loading from 'base/loading/loading'
   import {mapState, mapMutations, mapActions} from 'vuex'
   import validator from 'common/js/validator'
-  import {saveToLocal} from 'common/js/store'
+  import {putToDB, getFromDB} from 'common/js/store'
 
   export default {
     data() {
@@ -82,8 +82,10 @@
         this.login(data)
           .then((res) => {
             if (res && res.data.code === 0) {
-              saveToLocal(res.data.data)
-              this.$router.push('/message')
+              // 登录时将其填充到vuex, 并保存到本地存储
+              this.setUserInfo({...res.data.data})
+              putToDB(res.data.data)
+              this.$router.push('/message')    
             }
           })
           .catch((e) => {

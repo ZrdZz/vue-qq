@@ -65,7 +65,7 @@
         <input type="text" v-model="userInfo.university" class="university-input" placeholder="请填写全名">
       </div>
       <div class="btn-container">
-        <input class="submitBtn" type="submit" value="保存">
+        <input class="submitBtn" type="submit" value="保存" :disabled="disabled">
       </div> 
     </form>
     <loading v-show="isFetching" title="正在保存..."></loading>
@@ -76,7 +76,7 @@
   import {mapState, mapMutations, mapActions} from 'vuex'
   import CityPicker from 'components/citypicker/citypicker'
   import Loading from 'base/loading/loading'
-  import {saveToLocal, loadFromLocal} from 'common/js/store'
+  import {putToDB, getFromDB} from 'common/js/store'
   import eventHub from 'src/eventHub'
 
   export default {
@@ -91,7 +91,8 @@
           career: '',
           company: '',
           university: ''
-        }
+        },
+        disabled: true
       }
     },
     computed: mapState({
@@ -145,7 +146,7 @@
         this.userSetting(data)
           .then((res) => {
             if (res && res.data.code === 0) {
-              saveToLocal(res.data.data, true)
+              putToDB({...res.data.data, account: this.xUserInfo.account})
             }
           })
           .catch(() => {
@@ -159,10 +160,18 @@
       ...mapActions([
         'userSetting'
       ])
-    },      
+    },     
+    watch: {
+      userInfo: {
+        isChanged() {
+          this.disabled = !this.disabled
+        },
+        deep: true
+      }
+    },
     created() {
-      // 从localstorage中加载数据来更新setting表
-      let user = loadFromLocal()
+      // 从本地存储中加载数据来更新setting表
+      let user = getFromDB(this.xUserInfo.account)
       let keys = Object.keys(this.userInfo)
       // 这里要用nextTick, 是因为这里在created发出一个事件, 在citypicker中是在mounted中接受的, 但是这样是接受不到的
       this.$nextTick(() => {

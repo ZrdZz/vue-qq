@@ -16,10 +16,10 @@ user.post('login', async(ctx) => {
   }
   try {
     password = md5(password)
-    let user = await User.findOne({account, password}).select({nickname: 1, account: 1, _id: 0})
+    let user = await User.findOne({account, password}).populate('setting').select({__v: 0})
     if (user) {
-      ctx.session.userInfo = user
-      responseClient(ctx, 200, 0, '登录成功', user)
+      ctx.session.userInfo = {account, password}
+      responseClient(ctx, 200, 0, '登录成功', {account, ...user})
     } else {
       responseClient(ctx, 400, 1, '用户名或密码错误')
     }
