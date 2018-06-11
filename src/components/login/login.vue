@@ -48,7 +48,7 @@
   import Loading from 'base/loading/loading'
   import {mapState, mapMutations, mapActions} from 'vuex'
   import validator from 'common/js/validator'
-  import {putToDB, getFromDB} from 'common/js/store'
+  import {putToDB} from 'common/js/store'
 
   export default {
     data() {

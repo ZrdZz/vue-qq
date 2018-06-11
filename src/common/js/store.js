@@ -36,8 +36,8 @@ function openDB(dbName, version, objectStoreConfig) {
     
     request.onupgradeneeded = (e) => {
       let db = e.target.result
-      if  (!db.objectStoreNames.contains(objectStoreName)) {
-        let objectStore = db.createObjectStore(objectStoreName, {keyPath: keyPath})
+      if (!db.objectStoreNames.contains(objectStoreName)) {
+        db.createObjectStore(objectStoreName, {keyPath: keyPath})
       }
     }
 

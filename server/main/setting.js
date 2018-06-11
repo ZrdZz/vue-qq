@@ -10,8 +10,14 @@ setting.post('setting', async(ctx) => {
   let userInfo = ctx.request.body
 
   try {
-    let userSetting = await UserSetting.create({...userInfo})
-    let user = await User.findOne({account: account})
+    // let userSetting = await UserSetting.create({...userInfo})
+    // let user = await User.findOne({account: account})
+    // 上面的写法将异步改为了串行, 应该将不相关的异步请求合并, 同时注册多个异步事件
+    let [userSetting, user] = await Promise.all([
+      UserSetting.create({...userInfo}),
+      User.findOne({account: account})
+    ])
+
     user.setting = userSetting
     let newUser = await user.save()
     if (newUser) {

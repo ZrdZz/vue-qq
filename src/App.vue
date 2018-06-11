@@ -9,7 +9,7 @@
 <script type="text/ecmascript-6">
   import {mapState, mapMutations, mapActions} from 'vuex'
   import Popup from 'base/popup/popup'
-  import {loadFromLocal} from 'common/js/store'
+  import {getFromDB} from 'common/js/store'
   
   export default {
     computed: mapState({
@@ -31,16 +31,21 @@
     created() {
       this.autoLogin()
         .then((res) => {
-          if (res.data.code === 0) {
-            let userInfo = loadFromLocal()
-            if (!userInfo) {
-              this.popUp({popLevel: 'success', popText: '请重新登陆'})
-              this.$router.push('/login')
-              return
-            }
-            this.popUp({popLevel: 'success', popText: res.data.message})
-            this.setUserInfo({...userInfo})
-            this.$router.replace('/message')
+          if (res && res.data.code === 0) {
+            getFromDB(res.data.data.account)
+              .then((userInfo) => {
+                if (!userInfo) {
+                  this.popUp({popLevel: 'success', popText: '请重新登陆'})
+                  this.$router.push('/login')
+                  return                
+                }
+                this.popUp({popLevel: 'success', popText: res.data.message})
+                this.setUserInfo({...userInfo})
+                this.$router.replace('/message')
+              })
+              .catch(() => {
+                this.popUp({popLevel: 'error', popText: '服务器维护中'})
+              })
           } else {
             this.popUp({popLevel: 'error', popText: res.data.message})
             this.$router.replace('/login')

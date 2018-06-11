@@ -65,7 +65,7 @@
         <input type="text" v-model="userInfo.university" class="university-input" placeholder="请填写全名">
       </div>
       <div class="btn-container">
-        <input class="submitBtn" type="submit" value="保存" :disabled="disabled">
+        <input class="submitBtn" type="submit" value="保存">
       </div> 
     </form>
     <loading v-show="isFetching" title="正在保存..."></loading>
@@ -76,7 +76,7 @@
   import {mapState, mapMutations, mapActions} from 'vuex'
   import CityPicker from 'components/citypicker/citypicker'
   import Loading from 'base/loading/loading'
-  import {putToDB, getFromDB} from 'common/js/store'
+  import {putToDB} from 'common/js/store'
   import eventHub from 'src/eventHub'
 
   export default {
@@ -91,8 +91,7 @@
           career: '',
           company: '',
           university: ''
-        },
-        disabled: true
+        }
       }
     },
     computed: mapState({
@@ -161,25 +160,17 @@
         'userSetting'
       ])
     },     
-    watch: {
-      userInfo: {
-        isChanged() {
-          this.disabled = !this.disabled
-        },
-        deep: true
-      }
-    },
-    created() {
-      // 从本地存储中加载数据来更新setting表
-      let user = getFromDB(this.xUserInfo.account)
-      let keys = Object.keys(this.userInfo)
+    mounted() {
+      let userInfo = this.xUserInfo.setting
       // 这里要用nextTick, 是因为这里在created发出一个事件, 在citypicker中是在mounted中接受的, 但是这样是接受不到的
       this.$nextTick(() => {
+        let keys = Object.keys(this.userInfo)
+        console.log(userInfo)
         keys.map((key) => {
           if (key === 'city') {
-            eventHub.$emit('selectedCity', user[key])
+            eventHub.$emit('selectedCity', userInfo[key])
           }
-          this.userInfo[key] = user[key]
+          this.userInfo[key] = userInfo[key]
         })
       })
     }

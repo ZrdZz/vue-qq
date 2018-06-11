@@ -16,10 +16,10 @@ user.post('login', async(ctx) => {
   }
   try {
     password = md5(password)
-    let user = await User.findOne({account, password}).populate('setting').select({__v: 0})
+    let user = await User.findOne({account, password}).populate('setting').select({__v: 0, _id: 0})
     if (user) {
       ctx.session.userInfo = {account, password}
-      responseClient(ctx, 200, 0, '登录成功', {account, ...user})
+      responseClient(ctx, 200, 0, '登录成功', user)
     } else {
       responseClient(ctx, 400, 1, '用户名或密码错误')
     }
@@ -68,7 +68,7 @@ user.post('register', async(ctx) => {
 
 user.get('autoLogin', async(ctx) => {
   if (ctx.session.userInfo) {
-    responseClient(ctx, 200, 0, '已登录')
+    responseClient(ctx, 200, 0, '已登录', ctx.session.userInfo)
   } else {
     responseClient(ctx, 200, 1, '请重新登陆')
   }
