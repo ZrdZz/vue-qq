@@ -41,7 +41,6 @@
                 }
                 this.popUp({popLevel: 'success', popText: res.data.message})
                 this.setUserInfo({...userInfo})
-                this.$router.replace('/message')
               })
               .catch(() => {
                 this.popUp({popLevel: 'error', popText: '服务器维护中'})

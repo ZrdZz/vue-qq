@@ -152,6 +152,7 @@
             this.popUp({popLevel: 'error', popText: '服务器维护中'})
           })
       },
+
       ...mapMutations({
         popUp: 'SET_POPUP',
         setUserInfo: 'SET_USERINFO'
@@ -161,9 +162,8 @@
       ])
     },     
     mounted() {
-      let userInfo = this.xUserInfo.setting
-      // 这里要用nextTick, 是因为这里在created发出一个事件, 在citypicker中是在mounted中接受的, 但是这样是接受不到的
       this.$nextTick(() => {
+        let userInfo = this.xUserInfo.setting
         let keys = Object.keys(this.userInfo)
         console.log(userInfo)
         keys.map((key) => {
@@ -171,7 +171,7 @@
             eventHub.$emit('selectedCity', userInfo[key])
           }
           this.userInfo[key] = userInfo[key]
-        })
+        })            
       })
     }
   }
