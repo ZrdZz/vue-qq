@@ -34,7 +34,7 @@
       </div>
       <div class="city setting-option border-1px">
         <span>地点</span>
-        <city-picker @city="selectCity"></city-picker>
+        <city-picker :fromDBCity="fromDBCity"></city-picker>
       </div>
       <div class="career setting-option border-1px">
         <span>职业</span>
@@ -77,7 +77,6 @@
   import CityPicker from 'components/citypicker/citypicker'
   import Loading from 'base/loading/loading'
   import {putToDB} from 'common/js/store'
-  import eventHub from 'src/eventHub'
 
   export default {
     data() {
@@ -91,7 +90,9 @@
           career: '',
           company: '',
           university: ''
-        }
+        },
+        fromDBInfo: {},
+        fromDBCity: ''
       }
     },
     computed: mapState({
@@ -152,27 +153,44 @@
             this.popUp({popLevel: 'error', popText: '服务器维护中'})
           })
       },
-
+      async getInfoFromDB() {
+        this.fetchStart()
+        this.fromDBInfo = this.xUserInfo.setting
+        if (!this.fromDBInfo) {
+          this.fromDBInfo = await new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve(this.xUserInfo.setting)
+            }, 1000)
+          })
+        }  
+        this.fetchEnd()
+      },
       ...mapMutations({
         popUp: 'SET_POPUP',
-        setUserInfo: 'SET_USERINFO'
+        setUserInfo: 'SET_USERINFO',
+        fetchStart: 'FETCH_START',
+        fetchEnd: 'FETCH_END'
       }),
       ...mapActions([
         'userSetting'
       ])
     },     
-    mounted() {
-      this.$nextTick(() => {
-        let userInfo = this.xUserInfo.setting
+    watch: {
+      fromDBInfo() {
+        if (!this.fromDBInfo) {
+          return
+        }
         let keys = Object.keys(this.userInfo)
-        console.log(userInfo)
         keys.map((key) => {
           if (key === 'city') {
-            eventHub.$emit('selectedCity', userInfo[key])
+            this.fromDBCity = this.fromDBInfo[key]
           }
-          this.userInfo[key] = userInfo[key]
-        })            
-      })
+          this.userInfo[key] = this.fromDBInfo[key]
+        })  
+      }
+    },
+    mounted() {
+      this.getInfoFromDB()      
     }
   }
 </script>

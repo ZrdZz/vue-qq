@@ -10,7 +10,6 @@
 <script type="text/ecmascript-6">
   import Picker from 'base/picker/picker'
   import {provinceList, cityList, areaList} from 'components/citypicker/data'
-  import eventHub from 'src/eventHub'
 
   export default {
     name: 'city-picker',
@@ -21,6 +20,12 @@
         selectedIndex: [0, 0, 0],
         cancelTxt: '取消',
         confirmTxt: '确定'
+      }
+    },
+    props: {
+      fromDBCity: {
+        type: String,
+        default: ''
       }
     },
     computed: {
@@ -34,6 +39,9 @@
     watch: {
       data() {
         this.$refs.picker.refresh()
+      },
+      fromDBCity() {
+        this.$refs.city.innerHTML = this.fromDBCity
       }
     },
     components: {
@@ -61,15 +69,7 @@
           }
           this.tempIndex.splice(i, 1, newIndex)
         }
-      },
-      selectedCity(city) {
-        this.$refs.city.innerHTML = city
       }
-    },
-    mounted() {
-      this.$nextTick(() => {
-        eventHub.$on('selectedCity', this.selectedCity)
-      })
     }
   }
 </script>
