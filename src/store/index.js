@@ -45,12 +45,18 @@ export default new Vuex.Store({
       try {
         let res = await axios.post('/login', payload)
         if (res && res.data.code === 0) {
+          var info = {
+            nickname: res.data.data.nickname,
+            account: res.data.data.account,
+            password: res.data.data.password,
+            ...res.data.data.setting
+          }
           commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.data.message})
-          commit(mutationTypes.SET_USERINFO, {...res.data.data})
+          commit(mutationTypes.SET_USERINFO, info)
         } else {
           commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
         }
-        return res
+        return info
       } catch (e) {
         commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: '用户名或密码错误'})
       } finally {
@@ -91,15 +97,14 @@ export default new Vuex.Store({
         let res = null
         let {account} = state.userInfo
         // 没有设置信息前只有account, 所以是创建, 应用post
-        if ((Object.keys(state.userInfo).length <= 1)) {
+        if ((Object.keys(state.userInfo).length <= 3)) {
           res = await axios.post('/setting', payload, {params: {id: account}})
         } else {
-          res = await axios.put('/setting', payload, {params: {id: payload.setting_id}})
-          res.data.data = {...res.data.data, ...payload}
+          res = await axios.put('/setting', payload, {params: {id: payload._id}})
         }
         if (res && res.data.code === 0) {
           commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.data.message})
-          commit(mutationTypes.SET_USERINFO, {...res.data.data})
+          commit(mutationTypes.SET_USERINFO, payload)
         } else {
           commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
         }

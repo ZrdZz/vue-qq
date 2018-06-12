@@ -20,6 +20,7 @@ export default new Router({
     },
     {
       path: '/',
+      redirect: 'message',
       components: {
         main: Main
       },

@@ -81,14 +81,13 @@
         }
         this.login(data)
           .then((res) => {
-            if (res && res.data.code === 0) {
-              // 登录时将其填充到vuex, 并保存到本地存储
-              this.setUserInfo({...res.data.data})
-              putToDB(res.data.data)
-              this.$router.push('/message')    
-            }
+            // 登录时将其填充到vuex, 并保存到本地存储
+            this.setUserInfo(res)
+            putToDB(res)
+            this.$router.push('/message')    
           })
           .catch((e) => {
+            console.log(e)
             this.popUp({popLevel: 'error', popText: '服务器维护中'})
           })
       },

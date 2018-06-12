@@ -59,7 +59,7 @@
         }
         city = city.join('/')
         this.$refs.city.innerHTML = city
-        this.$emit('city', city)
+        this.$emit('selectCity', city)
       },
       handleChange(i, newIndex) {
         if (newIndex !== this.tempIndex[i]) {

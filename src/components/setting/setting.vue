@@ -34,7 +34,7 @@
       </div>
       <div class="city setting-option border-1px">
         <span>地点</span>
-        <city-picker :fromDBCity="fromDBCity"></city-picker>
+        <city-picker @selectCity="selectCity" :fromDBCity="fromDBCity"></city-picker>
       </div>
       <div class="career setting-option border-1px">
         <span>职业</span>
@@ -68,7 +68,7 @@
         <input class="submitBtn" type="submit" value="保存">
       </div> 
     </form>
-    <loading v-show="isFetching" title="正在保存..."></loading>
+    <loading v-show="isFetching" title="正在载入..."></loading>
   </div>
 </template>
 
@@ -92,11 +92,12 @@
           university: ''
         },
         fromDBInfo: {},
-        fromDBCity: ''
+        fromDBCity: '',
+        // 这里不能使用全局的isFetching, 因为当在当前页刷新时, 会有两次fetchStart, 一次在自登陆, 一次是在这里取数据, 所以fetching会提前结束
+        isFetching: false
       }
     },
     computed: mapState({
-      isFetching: 'isFetching',
       xUserInfo: 'userInfo'
     }),
     components: {
@@ -114,6 +115,7 @@
         let inputfile = document.querySelector('.inputfile')
         let file = inputfile.files[0]
         // 1MB = 1024KB = 1024*1024B(1MB和1Mb不一样)
+        console.log(file.size)
         if (file.size > 2 * 1024 * 1024) {
           this.popUp({popLevel: 'error', popText: '上传图片大于2M, 请重新选择'})
           return 
@@ -139,14 +141,21 @@
         changedKey.map((key) => {
           changedUserInfo[key] = this.userInfo[key]
         })
+        if (JSON.stringify(changedUserInfo) === '{}') {
+          return
+        }
         let data = {
-          setting_id: this.xUserInfo.setting_id,
+          _id: this.xUserInfo._id,
           ...changedUserInfo
         }
+
         this.userSetting(data)
           .then((res) => {
             if (res && res.data.code === 0) {
-              putToDB({...res.data.data, account: this.xUserInfo.account})
+              putToDB({
+                ...this.xUserInfo,
+                ...changedUserInfo
+              })
             }
           })
           .catch(() => {
@@ -154,32 +163,15 @@
           })
       },
       async getInfoFromDB() {
-        this.fetchStart()
-        this.fromDBInfo = this.xUserInfo.setting
-        if (!this.fromDBInfo) {
+        this.isFetching = true
+        this.fromDBInfo = this.xUserInfo
+        if (!this.fromDBInfo.account) {
           this.fromDBInfo = await new Promise((resolve, reject) => {
             setTimeout(() => {
-              resolve(this.xUserInfo.setting)
+              resolve(this.xUserInfo)
             }, 1000)
           })
         }  
-        this.fetchEnd()
-      },
-      ...mapMutations({
-        popUp: 'SET_POPUP',
-        setUserInfo: 'SET_USERINFO',
-        fetchStart: 'FETCH_START',
-        fetchEnd: 'FETCH_END'
-      }),
-      ...mapActions([
-        'userSetting'
-      ])
-    },     
-    watch: {
-      fromDBInfo() {
-        if (!this.fromDBInfo) {
-          return
-        }
         let keys = Object.keys(this.userInfo)
         keys.map((key) => {
           if (key === 'city') {
@@ -187,10 +179,18 @@
           }
           this.userInfo[key] = this.fromDBInfo[key]
         })  
-      }
-    },
+        this.isFetching = false
+      },
+      ...mapMutations({
+        popUp: 'SET_POPUP',
+        setUserInfo: 'SET_USERINFO'
+      }),
+      ...mapActions([
+        'userSetting'
+      ])
+    },   
     mounted() {
-      this.getInfoFromDB()      
+      this.getInfoFromDB()    
     }
   }
 </script>
@@ -256,6 +256,7 @@
         appearance: none
         outline: none
         border: none
+        background: $color-white
     .btn-container
       width: 100px
       height: 30px

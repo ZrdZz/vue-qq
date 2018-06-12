@@ -21,7 +21,7 @@ setting.post('setting', async(ctx) => {
     user.setting = userSetting
     let newUser = await user.save()
     if (newUser) {
-      responseClient(ctx, 200, 0, '保存成功', {...userInfo, setting_id: userSetting._id})
+      responseClient(ctx, 200, 0, '保存成功', userInfo)
     } else {
       responseClient(ctx)
     }
@@ -35,7 +35,7 @@ setting.put('setting', async(ctx) => {
   let userSetting = ctx.request.body
 
   try {
-    let setting = await UserSetting.update({_id: setting_id}, {...userSetting}).exec()
+    let setting = await UserSetting.update({_id: setting_id}, userSetting).exec()
     if (setting) {
       responseClient(ctx, 200, 0, '保存成功')
     } else {
