@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="user-img" @click="settingShow">
-      <img src="../../common/images/default.png" width="40" height="40"/>
+      <img :src="userInfo.avatar" width="40" height="40"/>
     </div>
     <h2 class="title"> {{title}} </h2>
     <img class="head-img" width="30" height="30" src="../../common/images/add.png"/>
@@ -10,6 +10,7 @@
 
 <script type="text/ecmascript-6">
   import Setting from 'components/setting/setting'
+  import {mapState} from 'vuex'
   import eventHub from 'src/eventHub'
 
   export default {
@@ -18,6 +19,9 @@
         title: '消息'
       }
     },
+    computed: mapState([
+      'userInfo'
+    ]),
     methods: {
       changeTitle(title) {
         this.title = title
@@ -45,7 +49,7 @@
     justify-content: space-between
     align-items: center
     color: $color-text
-    background: $color-background-b
+    background: linear-gradient(to right, $color-light-blue, $color-light-cadetblue)
     img 
       margin-left: 10px
       border-radius: 50%

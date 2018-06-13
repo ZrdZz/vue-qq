@@ -11,7 +11,7 @@
     </div>
     <form @submit.prevent="setting">
       <div class="avatar setting-option border-1px">
-        <img src='../../common/images/default.png' width="50" height="50" ref="img">
+        <img :src="userInfo.avatar" width="50" height="50" ref="img">
         <div class="upload">
           <span class="text">上传头像</span>
           <input type="file" accept="image/*" class="inputfile" @change="readFile()">
@@ -115,8 +115,7 @@
         let inputfile = document.querySelector('.inputfile')
         let file = inputfile.files[0]
         // 1MB = 1024KB = 1024*1024B(1MB和1Mb不一样)
-        console.log(file.size)
-        if (file.size > 2 * 1024 * 1024) {
+        if (file.size > 1 * 1024 * 1024) {
           this.popUp({popLevel: 'error', popText: '上传图片大于2M, 请重新选择'})
           return 
         }
@@ -124,7 +123,6 @@
         reader.readAsDataURL(file)
         let self = this
         reader.onload = function() {
-          self.$refs.img.src = this.result
           self.userInfo.avatar = this.result
         }
         reader.onerror = function() {
@@ -189,7 +187,7 @@
         'userSetting'
       ])
     },   
-    mounted() {
+    created() {
       this.getInfoFromDB()    
     }
   }
@@ -249,6 +247,7 @@
           border-radius: 10px
           background: $color-light-cadetblue
         .inputfile
+          width: 100%
           opacity: 0
     .career
       select 
