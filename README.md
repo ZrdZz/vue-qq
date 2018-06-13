@@ -2,6 +2,8 @@
 
 > A Vue.js project
 
+学vue时间不算久, 其中还有很多功能不太熟悉, 并且项目很多功能实现的很繁琐, 后面还会进行多次重构的
+
 ## Build Setup
 
 ``` bash
