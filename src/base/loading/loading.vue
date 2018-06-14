@@ -1,7 +1,7 @@
 <template>
   <div class="loading">
-    <img width="24" height="24" src="./loading.gif">
-    <p class="desc"> {{title}} </p>
+    <i class="icon iconfont icon-loading" ref="load"></i>
+    <p class="desc" v-show="show"> {{title}} </p>
   </div>
 </template>
 
@@ -10,8 +10,19 @@
     props: {
       title: {
         type: String,
-        default: '正在载入...'
+        default: 'Loading...'
+      },
+      size: {
+        type: String,
+        default: '30'
+      },
+      show: {
+        type: Boolean,
+        default: true
       }
+    },
+    mounted() {
+      this.$refs.load.style.fontSize = this.size + 'px'
     }
   }
 </script>
@@ -29,10 +40,20 @@
     justify-content: center
     align-items: center
     flex-direction: column
-    background: $color-dark-grey
+    background: $color-grey-cadetblue
     opacity: 0.5
+    .icon
+      color: $color-dark-cadetblue
+      font-weight: 700
+      animation: rotate 1.5s infinite 
+    @keyframes rotate
+      0% 
+        transform: rotate(0)
+      100% 
+        transform: rotate(360deg)
     .desc
+      margin-top: 10px
       line-height: 20px
-      font-size: $fontsize-small
-      color: $color-white
+      font-size: $fontsize-large-xx
+      color: $color-dark-cadetblue
 </style>

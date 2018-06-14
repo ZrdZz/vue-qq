@@ -1,7 +1,7 @@
 <template>
   <div class="setting">
     <div class="top border-1px">
-      <img>
+      <i class="icon iconfont icon-fanhui"></i>
       <span class="back" @click="back">
         返回
       </span>
@@ -68,7 +68,7 @@
         <input class="submitBtn" type="submit" value="保存">
       </div> 
     </form>
-    <loading v-show="isFetching" title="正在载入..."></loading>
+    <loading v-show="isFetching" size="50" :show="true"></loading>
   </div>
 </template>
 
@@ -207,13 +207,15 @@
     bottom: 0
     z-index: 100
     background: $color-light-grey-sss
-    color: #000
+    color: $color-gray-shallow
     .top
       position: relative
       height: 40px
       line-height: 40px
-      padding-left: 20px
       border-1px(#000)
+      .icon
+        font-weight: 700
+        margin-left: 10px
       .title
         position: absolute
         left: 50%

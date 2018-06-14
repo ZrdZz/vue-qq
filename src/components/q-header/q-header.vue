@@ -4,7 +4,7 @@
       <img :src="userInfo.avatar" width="40" height="40"/>
     </div>
     <h2 class="title"> {{title}} </h2>
-    <img class="head-img" width="30" height="30" src="../../common/images/add.png"/>
+    <i class="icon iconfont icon-zengjia"></i>
   </div>
 </template>
 
@@ -45,17 +45,18 @@
   .header
     display: flex
     width: 100%
-    height: 50px
+    height: 45px
     justify-content: space-between
     align-items: center
-    color: $color-text
+    color: $color-white
     background: linear-gradient(to right, $color-light-blue, $color-light-cadetblue)
     img 
       margin-left: 10px
       border-radius: 50%
     h2
-      font-size: $font-size-large
+      font-size: $fontsize-large
       font-weight: 100
-    .head-img
+    .icon
+      font-size: $fontsize-large-xxx
       margin-right: 10px
 </style>

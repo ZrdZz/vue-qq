@@ -43,7 +43,7 @@
                 this.setUserInfo(userInfo)
               })
               .catch(() => {
-                this.popUp({popLevel: 'error', popText: '服务器维护中'})
+                this.popUp({popLevel: 'error', popText: '客户端错误'})
               })
           } else {
             this.popUp({popLevel: 'error', popText: res.data.message})
@@ -51,7 +51,7 @@
           }
         })
       .catch(() => {
-        this.popUp({popLevel: 'error', popText: '服务器维护中'})
+        this.popUp({popLevel: 'error', popText: '客户端错误'})
       })
     }
   }

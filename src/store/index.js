@@ -58,7 +58,7 @@ export default new Vuex.Store({
         }
         return info
       } catch (e) {
-        commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: '用户名或密码错误'})
+        commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: '客户端错误'})
       } finally {
         commit(mutationTypes.FETCH_END)
       }

@@ -1,6 +1,6 @@
 <template>
   <div class="search"> 
-    <span class="icon-search"></span>
+    <i class="icon iconfont icon-sousuo"></i>
     搜索 
   </div>
 </template>
@@ -14,14 +14,13 @@
 
   .search
     width: 95%
-    height: 30px
-    line-height: 30px
+    height: 25px
+    line-height: 25px
     margin: 5px auto
     text-align: center
     border-radius: 5px
     font-size: $fontsize-medium
     background: $color-light-grey-sss
-    i 
-      display: inline-block
-      vertical-align: text-bottom
+    .icon
+      font-size: $fontsize-medium
 </style>

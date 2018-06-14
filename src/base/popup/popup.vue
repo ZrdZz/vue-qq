@@ -3,6 +3,7 @@
 <template>
   <transition name="slide-fade" @after-enter="afterEnter" @after-leave="afterLeave">
     <div class="popup" v-show="isShow" :class="color"> 
+      <i class="icon" :class="color + '-icon'"></i>
       <h1 class="level"> {{popLevel}} </h1>
       <p class="text"> {{popText}} </p>
     </div>
@@ -76,20 +77,37 @@
     top: 0
     left: 10px
     right: 10px
+    padding: 10px
     border-bottom-left-radius: 5px
     border-bottom-right-radius: 5px
-    background: $color-light-greenyellow 
+    color: $color-gray-shallow
     .level
-      margin: 10px
+      display: inline-block
+      vertical-align: middle
       font-size: $fontsize-large-xx
+    .icon
+      display: inline-block
+      vertical-align: middle
+      width: 30px
+      height: 30px
+      background-size: 30px 
     .text
       margin: 10px
   .success
-    color: $color-dark-deepgreen
+    background: $color-green-shallow
+    border: 1px solid $color-green-middle
   .warnning
-    color: $color-light-yellow
+    background: $color-yellow-shallow
+    border: 1px solid $color-yellow-middle
   .error
-    color: $color-light-red
+    background: $color-red-shallow
+    border: 1px solid $color-red-middle
+  .success-icon
+    background-image: url("success.svg")
+  .error-icon
+    background-image: url("error.svg")
+  .warnning-icon
+    background-image: url("warnning.svg")
   .slide-fade-enter-active, .slide-fade-leave-active {
     transition: all 0.3s;
   }
