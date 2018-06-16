@@ -11,7 +11,7 @@
     </div>
     <form @submit.prevent="setting">
       <div class="avatar setting-option border-1px">
-        <img :src="userInfo.avatar" width="50" height="50" ref="img">
+        <img :src="userInfo.avatar" width="50" height="50">
         <div class="upload">
           <span class="text">上传头像</span>
           <input type="file" accept="image/*" class="inputfile" @change="readFile()">
@@ -116,7 +116,7 @@
         let file = inputfile.files[0]
         // 1MB = 1024KB = 1024*1024B(1MB和1Mb不一样)
         if (file.size > 1 * 1024 * 1024) {
-          this.popUp({popLevel: 'error', popText: '上传图片大于2M, 请重新选择'})
+          this.popUp({popLevel: 'error', popText: '上传图片大于1M, 请重新选择'})
           return 
         }
         let reader = new FileReader()
@@ -140,6 +140,7 @@
           changedUserInfo[key] = this.userInfo[key]
         })
         if (JSON.stringify(changedUserInfo) === '{}') {
+          this.popUp({popLevel: 'success', popText: '保存成功'})
           return
         }
         let data = {
@@ -156,8 +157,9 @@
               })
             }
           })
-          .catch(() => {
-            this.popUp({popLevel: 'error', popText: '服务器维护中'})
+          .catch((e) => {
+            console.log(e)
+            this.popUp({popLevel: 'error', popText: '客户端错误'})
           })
       },
       async getInfoFromDB() {
@@ -267,5 +269,7 @@
       border-radius: 5px
       background: $color-light-cadetblue
       .submitBtn
+        width: 100%
+        height: 100%
         background: transparent
 </style>

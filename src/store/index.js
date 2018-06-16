@@ -43,7 +43,7 @@ export default new Vuex.Store({
     async login({commit}, payload) {
       commit(mutationTypes.FETCH_START)
       try {
-        let res = await axios.post('/login', payload)
+        let res = await axios.post('/session', payload)
         if (res && res.data.code === 0) {
           var info = {
             nickname: res.data.data.nickname,
@@ -55,9 +55,11 @@ export default new Vuex.Store({
           commit(mutationTypes.SET_USERINFO, info)
         } else {
           commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
+          return
         }
         return info
       } catch (e) {
+        console.log(e)
         commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: '客户端错误'})
       } finally {
         commit(mutationTypes.FETCH_END)
@@ -66,12 +68,13 @@ export default new Vuex.Store({
     async register({commit}, payload) {
       commit(mutationTypes.FETCH_START)
       try {
-        let res = await axios.post('/register', payload)
+        let res = await axios.post('/user', payload)
         if (res && res.data.code === 0) {
           commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.data.message})
           commit(mutationTypes.SET_USERINFO, {account: res.data.data.account})
         } else {
           commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
+          return
         }
         return res
       } catch (e) {
@@ -83,7 +86,7 @@ export default new Vuex.Store({
     async autoLogin({commit}) {
       commit(mutationTypes.FETCH_START)
       try {
-        let res = await axios.get('/autoLogin')
+        let res = await axios.get('/session')
         return res
       } catch (e) {
         console.log(e)
@@ -96,17 +99,17 @@ export default new Vuex.Store({
       try {
         let res = null
         let {account} = state.userInfo
-        // 没有设置信息前只有account, 所以是创建, 应用post
         if ((Object.keys(state.userInfo).length <= 3)) {
-          res = await axios.post('/setting', payload, {params: {id: account}})
+          res = await axios.post('/userinfo', payload, {params: {id: account}})
         } else {
-          res = await axios.put('/setting', payload, {params: {id: payload._id}})
+          res = await axios.put('/userinfo', payload, {params: {id: payload._id}})
         }
         if (res && res.data.code === 0) {
           commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.data.message})
           commit(mutationTypes.SET_USERINFO, payload)
         } else {
           commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
+          return
         }
         return res
       } catch (e) {

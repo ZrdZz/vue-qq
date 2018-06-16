@@ -5,5 +5,5 @@ module.exports = Schema({
   nickname: String,
   account: String,
   password: String,
-  setting: {type: Schema.Types.ObjectId, ref: 'UserSetting'}
+  setting: {type: Schema.Types.ObjectId, ref: 'UserInfo'}
 })

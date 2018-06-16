@@ -61,9 +61,6 @@ export function putToDB(userInfo) {
     .then((objectStore) => {
       objectStore.put(userInfo)
     })
-    .catch((e) => {
-      console.log(e)
-    })
 }
 
 export function getFromDB(account) {
@@ -83,9 +80,6 @@ export function getFromDB(account) {
               }
             })
           })
-          .catch((e) => {
-            console.log(e)
-          })
 }
 
 export function deleteFromDB(account) {
@@ -94,8 +88,5 @@ export function deleteFromDB(account) {
   openDB(dbName, version, objectStoreConfig)
     .then((objectStore) => {
       objectStore.delete(account)
-    })
-    .catch((e) => {
-      console.log(e)
     })
 }

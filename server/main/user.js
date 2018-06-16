@@ -4,7 +4,8 @@ const {md5, responseClient} = require('../util.js')
 
 const user = new Router()
 
-user.post('login', async(ctx) => {
+// 登录
+user.post('session', async(ctx) => {
   let {account, password} = ctx.request.body
   if (!account) {
     responseClient(ctx, 400, 2, '账号不能为空')
@@ -28,7 +29,20 @@ user.post('login', async(ctx) => {
   }
 })
 
-user.post('register', async(ctx) => {
+// 自动登录
+user.get('session', async(ctx) => {
+  if (ctx.session.userInfo) {
+    responseClient(ctx, 200, 0, '已登录', ctx.session.userInfo)
+  } else {
+    responseClient(ctx, 200, 1, '请重新登陆')
+  }
+})
+
+// 登出
+// user.delete('session', async(ctx) => {})
+
+// 注册
+user.post('user', async(ctx) => {
   let {nickname, account, password, rePassword} = ctx.request.body
   if (!nickname) {
     responseClient(ctx, 400, 2, '昵称不可为空')
@@ -66,12 +80,5 @@ user.post('register', async(ctx) => {
   }
 })
 
-user.get('autoLogin', async(ctx) => {
-  if (ctx.session.userInfo) {
-    responseClient(ctx, 200, 0, '已登录', ctx.session.userInfo)
-  } else {
-    responseClient(ctx, 200, 1, '请重新登陆')
-  }
-})
 
 module.exports = user

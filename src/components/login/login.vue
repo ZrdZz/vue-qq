@@ -82,11 +82,13 @@
         this.login(data)
           .then((res) => {
             // 保存到本地存储
+            // 在putToDB的catch中出错返回login
             putToDB(res)
             this.$router.push('/message')    
           })
           .catch((e) => {
             console.log(e)
+            this.$router.push('/login') 
             this.popUp({popLevel: 'error', popText: '客户端错误'})
           })
       },
@@ -113,7 +115,9 @@
             }
           })
           .catch((e) => {
-            this.popUp({popLevel: 'error', popText: '服务器维护中'})
+            console.log(e)
+            this.$router.push('/login') 
+            this.popUp({popLevel: 'error', popText: '客户端错误'})
           })
       },
       registerPage() {
