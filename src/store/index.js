@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {get, post, put} from 'common/js/fetch'
+import {get, post, patch} from 'common/js/fetch'
 import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
@@ -45,19 +45,13 @@ export default new Vuex.Store({
       try {
         let res = await post('/session', payload)
         if (res && res.code === 0) {
-          var info = {
-            nickname: res.data.nickname,
-            account: res.data.account,
-            password: res.data.password,
-            ...res.data.setting
-          }
           commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.message})
-          commit(mutationTypes.SET_USERINFO, info)
+          commit(mutationTypes.SET_USERINFO, res.data)
         } else {
           commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.message})
           return
         }
-        return info
+        return res.data
       } catch (e) {
         console.log(e)
         commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: '用户名或密码错误'})
@@ -71,12 +65,12 @@ export default new Vuex.Store({
         let res = await post('/user', payload)
         if (res && res.code === 0) {
           commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.message})
-          commit(mutationTypes.SET_USERINFO, {account: res.data.account})
+          commit(mutationTypes.SET_USERINFO, res.data)
         } else {
           commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.message})
           return
         }
-        return res
+        return res.data
       } catch (e) {
         commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: '注册失败'})
       } finally {
@@ -97,13 +91,8 @@ export default new Vuex.Store({
     async userSetting({state, commit}, payload) {
       commit(mutationTypes.FETCH_START)
       try {
-        let res = null
         let {account} = state.userInfo
-        if ((Object.keys(state.userInfo).length <= 3)) {
-          res = await post('/userinfo', payload, {params: {id: account}})
-        } else {
-          res = await put('/userinfo', payload, {params: {id: payload._id}})
-        }
+        let res = await patch(`/user?id=${account}`, payload)
         if (res && res.code === 0) {
           commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.message})
           commit(mutationTypes.SET_USERINFO, payload)

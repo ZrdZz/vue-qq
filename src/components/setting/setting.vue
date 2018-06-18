@@ -130,27 +130,24 @@
         }
       },
       setting() {
-        let keys = Object.keys(this.userInfo)
-        // 将改变的信息过滤出来
-        let changedKey = keys.filter((key) => {
-          return this.userInfo[key] !== this.xUserInfo[key]
-        })
+        // 找出改变的信息
         let changedUserInfo = {}
-        changedKey.map((key) => {
-          changedUserInfo[key] = this.userInfo[key]
-        })
+        for (let key in this.userInfo) {
+          if (this.userInfo.hasOwnProperty(key)) {
+            if (this.userInfo[key] !== this.xUserInfo[key]) {
+              changedUserInfo[key] = this.userInfo[key]
+            }
+          }
+        }
+
         if (JSON.stringify(changedUserInfo) === '{}') {
           this.popUp({popLevel: 'success', popText: '保存成功'})
           return
         }
-        let data = {
-          _id: this.xUserInfo._id,
-          ...changedUserInfo
-        }
 
-        this.userSetting(data)
+        this.userSetting(changedUserInfo)
           .then((res) => {
-            if (res && res.code === 0) {
+            if (res) {
               putToDB({
                 ...this.xUserInfo,
                 ...changedUserInfo

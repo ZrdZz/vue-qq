@@ -35,7 +35,7 @@
         </div> 
       </form>  
       <div class="return" @click="returnLogin">
-        <img class="return-img" width="30" height="30" src="../../common/images/close.png"/> 
+        <i class="icon iconfont icon-fanhui"></i>
         <span class="return-text">返回</span>
       </div>
     </div>
@@ -115,7 +115,7 @@
         }
         this.register(data)
           .then((res) => {
-            if (res && res.code === 0) {
+            if (res) {
               this.returnLogin()
             }
           })
@@ -219,7 +219,7 @@
         position: absolute
         top: 10px
         left: 10px
-        .return-img
+        .icon
           vertical-align: middle
         .return-text
           vertical-align: middle

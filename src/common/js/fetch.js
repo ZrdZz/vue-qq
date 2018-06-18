@@ -31,3 +31,7 @@ export function put(url, data) {
 export function deletes(url, data) {
   return axios.delete(url, data, config)
 }
+
+export function patch(url, data) {
+  return axios.patch(url, data, config)
+}

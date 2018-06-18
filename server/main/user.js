@@ -17,7 +17,7 @@ user.post('session', async(ctx) => {
   }
   try {
     password = md5(password)
-    let user = await User.findOne({account, password}).populate('setting').select({__v: 0, _id: 0})
+    let user = await User.findOne({account, password}).select({__v: 0, _id: 0, password: 0})
     if (user) {
       ctx.session.userInfo = {account, password}
       responseClient(ctx, 200, 0, '登录成功', user)
@@ -71,7 +71,6 @@ user.post('user', async(ctx) => {
       let data = {
         nickname: newUser.nickname,
         account: newUser.account,
-        password: newUser.password
       }
       responseClient(ctx, 200, 0, '注册成功', data)
     }
@@ -80,5 +79,21 @@ user.post('user', async(ctx) => {
   }
 })
 
+// 修改信息
+user.patch('user', async(ctx) => {
+  let account = ctx.request.query.id
+  let userinfo = ctx.request.body
+
+  try {
+    let setting = await User.update({account: account}, userinfo).exec()
+    if (setting) {
+      responseClient(ctx, 200, 0, '保存成功')
+    } else {
+      responseClient(ctx)
+    }
+  } catch (e) {
+    responseClient(ctx)
+  }
+})
 
 module.exports = user
