@@ -31,27 +31,30 @@
     created() {
       this.autoLogin()
         .then((res) => {
-          if (res && res.data.code === 0) {
-            getFromDB(res.data.data.account)
+          if (res && res.code === 0) {
+            getFromDB(res.data.account)
               .then((userInfo) => {
                 if (!userInfo) {
                   this.popUp({popLevel: 'success', popText: '请重新登陆'})
-                  this.$router.push('/login')
+                  this.$router.replace('/login')
                   return                
                 }
-                this.popUp({popLevel: 'success', popText: res.data.message})
+                this.popUp({popLevel: 'success', popText: res.message})
                 this.setUserInfo(userInfo)
+                this.$router.replace('/message')
               })
               .catch(() => {
                 this.popUp({popLevel: 'error', popText: '客户端错误'})
+                this.$router.replace('/login')
               })
           } else {
-            this.popUp({popLevel: 'error', popText: res.data.message})
+            this.popUp({popLevel: 'error', popText: res.message})
             this.$router.replace('/login')
           }
         })
       .catch(() => {
         this.popUp({popLevel: 'error', popText: '客户端错误'})
+        this.$router.replace('/login')
       })
     }
   }

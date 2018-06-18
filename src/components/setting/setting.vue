@@ -150,7 +150,7 @@
 
         this.userSetting(data)
           .then((res) => {
-            if (res && res.data.code === 0) {
+            if (res && res.code === 0) {
               putToDB({
                 ...this.xUserInfo,
                 ...changedUserInfo

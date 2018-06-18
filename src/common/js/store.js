@@ -57,10 +57,23 @@ function openDB(dbName, version, objectStoreConfig) {
 export function putToDB(userInfo) {
   let {dbName, version, objectStoreConfig} = dbConfig
   
-  openDB(dbName, version, objectStoreConfig)
-    .then((objectStore) => {
-      objectStore.put(userInfo)
-    })
+  return openDB(dbName, version, objectStoreConfig)
+          .then((objectStore) => {
+            return new Promise((resolve, reject) => {
+              let putRequest = objectStore.put(userInfo)
+
+              putRequest.onsuccess = (e) => {
+                resolve(e.type)
+              }
+
+              putRequest.onerror = (e) => {
+                reject(e.type)
+              }
+            })
+          })
+          .catch((e) => {
+            console.log(e)
+          })
 }
 
 export function getFromDB(account) {
@@ -76,17 +89,33 @@ export function getFromDB(account) {
               }
 
               getRequest.onerror = (e) => {
-                reject(e)
+                reject(e.target.result)
               }
             })
+          })
+          .catch((e) => {
+            console.log(e)
           })
 }
 
 export function deleteFromDB(account) {
   let {dbName, version, objectStoreConfig} = dbConfig
 
-  openDB(dbName, version, objectStoreConfig)
-    .then((objectStore) => {
-      objectStore.delete(account)
-    })
+  return openDB(dbName, version, objectStoreConfig)
+          .then((objectStore) => {
+            return new Promise((resolve, reject) => {
+              let delRequest = objectStore.delete(account)
+
+              delRequest.onsuccess = (e) => {
+                resolve(e.type)
+              }
+
+              delRequest.onerror = (e) => {
+                resolve(e.type)
+              }
+            })
+          })
+          .catch((e) => {
+            console.log(e)
+          })
 }

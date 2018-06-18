@@ -44,7 +44,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import axios from 'axios'
   import Loading from 'base/loading/loading'
   import {mapState, mapMutations, mapActions} from 'vuex'
   import validator from 'common/js/validator'
@@ -84,11 +83,17 @@
             // 保存到本地存储
             // 在putToDB的catch中出错返回login
             putToDB(res)
-            this.$router.push('/message')    
+              .then((type) => {
+                if (type === 'success') {
+                  this.$router.replace('/message')    
+                } else {
+                  this.$router.replace('/login') 
+                }
+              })
           })
           .catch((e) => {
             console.log(e)
-            this.$router.push('/login') 
+            this.$router.replace('/login') 
             this.popUp({popLevel: 'error', popText: '客户端错误'})
           })
       },
@@ -110,7 +115,7 @@
         }
         this.register(data)
           .then((res) => {
-            if (res && res.data.code === 0) {
+            if (res && res.code === 0) {
               this.returnLogin()
             }
           })

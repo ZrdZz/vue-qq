@@ -1,6 +1,6 @@
 <template>
   <div class="citypicker">
-    <p @click="show" ref="city"> 选择城市 </p>
+    <p @click="show" ref="city" v-html="fromDBCity"></p>
     <picker @select="handleSelect(arguments)" :data="data" 
             :selected-index="selectedIndex" ref="picker" :title="title" 
             @change="handleChange" :cancelTxt="cancelTxt" :confirmTxt="confirmTxt"></picker>
@@ -25,7 +25,7 @@
     props: {
       fromDBCity: {
         type: String,
-        default: ''
+        default: '选择城市'
       }
     },
     computed: {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import {get, post, put} from 'common/js/fetch'
 import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
@@ -43,24 +43,24 @@ export default new Vuex.Store({
     async login({commit}, payload) {
       commit(mutationTypes.FETCH_START)
       try {
-        let res = await axios.post('/session', payload)
-        if (res && res.data.code === 0) {
+        let res = await post('/session', payload)
+        if (res && res.code === 0) {
           var info = {
-            nickname: res.data.data.nickname,
-            account: res.data.data.account,
-            password: res.data.data.password,
-            ...res.data.data.setting
+            nickname: res.data.nickname,
+            account: res.data.account,
+            password: res.data.password,
+            ...res.data.setting
           }
-          commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.data.message})
+          commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.message})
           commit(mutationTypes.SET_USERINFO, info)
         } else {
-          commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
+          commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.message})
           return
         }
         return info
       } catch (e) {
         console.log(e)
-        commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: '客户端错误'})
+        commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: '用户名或密码错误'})
       } finally {
         commit(mutationTypes.FETCH_END)
       }
@@ -68,12 +68,12 @@ export default new Vuex.Store({
     async register({commit}, payload) {
       commit(mutationTypes.FETCH_START)
       try {
-        let res = await axios.post('/user', payload)
-        if (res && res.data.code === 0) {
-          commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.data.message})
-          commit(mutationTypes.SET_USERINFO, {account: res.data.data.account})
+        let res = await post('/user', payload)
+        if (res && res.code === 0) {
+          commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.message})
+          commit(mutationTypes.SET_USERINFO, {account: res.data.account})
         } else {
-          commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
+          commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.message})
           return
         }
         return res
@@ -86,7 +86,7 @@ export default new Vuex.Store({
     async autoLogin({commit}) {
       commit(mutationTypes.FETCH_START)
       try {
-        let res = await axios.get('/session')
+        let res = await get('/session')
         return res
       } catch (e) {
         console.log(e)
@@ -100,15 +100,15 @@ export default new Vuex.Store({
         let res = null
         let {account} = state.userInfo
         if ((Object.keys(state.userInfo).length <= 3)) {
-          res = await axios.post('/userinfo', payload, {params: {id: account}})
+          res = await post('/userinfo', payload, {params: {id: account}})
         } else {
-          res = await axios.put('/userinfo', payload, {params: {id: payload._id}})
+          res = await put('/userinfo', payload, {params: {id: payload._id}})
         }
-        if (res && res.data.code === 0) {
-          commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.data.message})
+        if (res && res.code === 0) {
+          commit(mutationTypes.SET_POPUP, {popLevel: 'success', popText: res.message})
           commit(mutationTypes.SET_USERINFO, payload)
         } else {
-          commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.data.message})
+          commit(mutationTypes.SET_POPUP, {popLevel: 'error', popText: res.message})
           return
         }
         return res
