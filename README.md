@@ -24,6 +24,9 @@
 |—— record                  // 记录一些问题
 ```
 
+登录页面
+![](/record/images/login.png)
+
 ## Build Setup
 
 ``` bash
