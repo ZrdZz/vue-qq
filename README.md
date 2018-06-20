@@ -4,6 +4,26 @@
 
 学vue时间不算久, 其中还有很多功能不太熟悉, 并且项目很多功能实现的很繁琐, 后面还会进行多次重构的
 
+项目结构
+```
+|—— src                     // 前端源码文件
+|   |—— base                // 包含一些公共组件
+|   |—— common              // 包含一些公共的js、样式等
+|   |—— components          // 业务组件
+|   |—— router              // vue-router文件夹
+|   |—— store               // vuex文件夹
+|   |—— App.vue           
+|   |—— main.js
+|—— server                  // 后端源码文件夹
+|   |—— main                // 登录登出接口
+|   |—— feature             // 功能性接口
+|   |—— index.js            // server启动文件
+|   |—— util.js             // server工具类文件
+|—— schemas                 // mongoose schema文件夹
+|—— models                  // mongoose model文件夹
+|—— record                  // 记录一些问题
+```
+
 ## Build Setup
 
 ``` bash
