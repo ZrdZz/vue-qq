@@ -211,6 +211,7 @@
       position: relative
       height: 40px
       line-height: 40px
+      background: linear-gradient(to right, $color-light-blue, $color-light-cadetblue)
       border-1px(#000)
       .icon
         font-weight: 700

@@ -11,7 +11,7 @@
 <style scoped lang='stylus' rel='stylesheet/stylus'>
   .news  
     position: absolute
-    top: 90px
+    top: 80px
     left: 0
     right: 0
     bottom: 42px
