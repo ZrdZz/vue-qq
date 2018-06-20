@@ -25,7 +25,10 @@
 ```
 
 登录页面
-![](/record/images/login.png)
+
+![](https://github.com/ZrdZz/vue-qq/blob/master/record/images/login.png)
+![](https://github.com/ZrdZz/vue-qq/blob/master/record/images/message.png)
+![](https://github.com/ZrdZz/vue-qq/blob/master/record/images/setting.png)
 
 ## Build Setup
 
