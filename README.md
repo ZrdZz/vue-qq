@@ -2,7 +2,8 @@
 
 > A Vue.js project
 
-学vue时间不算久, 其中还有很多功能不太熟悉, 并且项目很多功能实现的很繁琐, 后面还会进行多次重构的
+学vue时间不算久, 其中还有很多功能不太熟悉, 并且项目很多功能实现的很繁琐, 后面还会进行多次重构的。
+在record中有详细记录开发过程中的一些问题
 
 项目结构
 ```
@@ -23,6 +24,12 @@
 |—— models                  // mongoose model文件夹
 |—— record                  // 记录一些问题
 ```
+
+登录页面
+
+![](https://github.com/ZrdZz/vue-qq/blob/master/record/images/login.png)
+![](https://github.com/ZrdZz/vue-qq/blob/master/record/images/message.png)
+![](https://github.com/ZrdZz/vue-qq/blob/master/record/images/setting.png)
 
 ## Build Setup
 
