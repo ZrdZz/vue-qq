@@ -11,7 +11,7 @@
 <script type="text/ecmascript-6">
   import Setting from 'components/setting/setting'
   import {mapState} from 'vuex'
-  import eventHub from 'src/eventHub'
+  import eventHub from 'common/js/eventHub'
 
   export default {
     data() {

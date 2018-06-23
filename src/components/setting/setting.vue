@@ -159,24 +159,27 @@
             this.popUp({popLevel: 'error', popText: '客户端错误'})
           })
       },
-      async getInfoFromDB() {
+      getFromDB() {
         this.isFetching = true
-        this.fromDBInfo = this.xUserInfo
-        if (!this.fromDBInfo.account) {
-          this.fromDBInfo = await new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve(this.xUserInfo)
-            }, 1000)
-          })
-        }  
-        let keys = Object.keys(this.userInfo)
-        keys.map((key) => {
-          if (key === 'city') {
-            this.fromDBCity = this.fromDBInfo[key]
+        let timer = setTimeout(() => {
+          if (!this.xUserInfo.account) {
+            this.retry()
+          } else {
+            this.fromDBInfo = this.xUserInfo
+            let keys = Object.keys(this.userInfo)
+            keys.map((key) => {
+              if (key === 'city') {
+                this.fromDBCity = this.fromDBInfo[key]
+              }
+              this.userInfo[key] = this.fromDBInfo[key]
+            }) 
+            clearTimeout(timer)
+            this.isFetching = false
           }
-          this.userInfo[key] = this.fromDBInfo[key]
-        })  
-        this.isFetching = false
+        }, 0)
+      },
+      retry() {
+        this.getFromDB()
       },
       ...mapMutations({
         popUp: 'SET_POPUP',
@@ -185,9 +188,9 @@
       ...mapActions([
         'userSetting'
       ])
-    },   
+    },  
     created() {
-      this.getInfoFromDB()    
+      this.retry()
     }
   }
 </script>

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import eventHub from 'src/eventHub'
+  import eventHub from 'common/js/eventHub'
 
   export default {
     methods: {

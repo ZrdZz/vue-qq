@@ -15,17 +15,13 @@
   import QHeader from 'components/q-header/q-header'
   import Search from 'base/search/search'
   import Tab from 'components/tab/tab'
-  import Vue from 'vue'
 
   export default {
     components: {
       QHeader,
       Search,
       Tab
-    },
-    create() {
-      Vue.prototype.account = '123456'
-    }    
+    }
   }
 </script>
 
