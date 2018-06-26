@@ -1,8 +1,8 @@
 <template>
   <div class="contact">
     <ul class="tap border-1px">
-      <li @click="getFriends">好友</li>
-      <li @click="getGroups">群聊</li>
+      <li @click="getFriends" :class="{active: styleTab}">好友</li>
+      <li @click="getGroups" :class="{active: !styleTab}">群聊</li>
     </ul>
     <list :data="data"></list>
     <loading v-show="isFetching" size="40" :show="true"></loading>
@@ -17,7 +17,8 @@
     data() {
       return {
         isFetching: false,
-        data: []
+        data: [],
+        styleTab: true
       }
     },
     components: {
@@ -26,9 +27,11 @@
     },
     methods: {
       getFriends() {
+        this.styleTab = true
         this.data = ['我的好友', '哈哈', '家人']
       },
       getGroups() {
+        this.styleTab = false
         this.data = ['群组']
       }
     },
@@ -55,7 +58,11 @@
         flex: 1
         height: 35px
         line-height: 35px
+        box-sizing: border-box
         text-align: center
+      .active
+        border-bottom: 2px solid $color-light-cadetblue
+        color: $color-light-cadetblue
     .list
       position: absolute
       top: 36px

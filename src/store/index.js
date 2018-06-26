@@ -39,9 +39,6 @@ export default new Vuex.Store({
       state.userInfo = {...state.userInfo, ...payload}
     }
   },
-  getter: {
-
-  },
   actions: {
     async login({commit}, payload) {
       commit(mutationTypes.FETCH_START)
