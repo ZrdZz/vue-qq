@@ -1,22 +1,72 @@
 <template>
-  <div class="list">
+  <div class="list" ref="outerWrapper">
     <ul>
-      <li class="group" v-for="(item, index) in data" :key="index"> 
-        <i class="icon iconfont icon-xiangyoujiantou"></i> {{item}} <span> 8/10 </span>
-        <ul>
-          <li v-show="item.childData" v-for="(item, index) in item.childData" :key="index"> {{item.name}} </li>
-        </ul> 
+      <li class="group" @click="openList(index)" v-for="(item, index) in data" :key="index"> 
+        <i class="icon iconfont icon-xiangyoujiantou"></i> {{item.name}}
+        <div class="childList" ref="innerWrapper" v-if="ifOpen(item, index)">
+          <ul>
+            <li class="childData border-1px" v-for="(item, index) in item.childData" :key="index"> 
+              <img />
+              {{item.name}} 
+            </li>
+          </ul> 
+        </div>
       </li>
     </ul>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import BScroll from 'better-scroll'
+
   export default {
+    data() {
+      let obj = {}
+      this.data.forEach((item, index) => {
+        obj['list' + index] = false
+      })
+      return obj
+    },
     props: {
       data: {
         type: Array,
         default: () => []
+      }
+    },
+    methods: {
+      refresh() {
+        if (this.outerScroll) {
+          this.outerScroll.refresh()
+        }
+        if (this.innerScroll) {
+          this.innerScroll.refresh()
+        }
+      },
+      openList(index) {
+        this['list' + index] = !this['list' + index]
+      },
+      ifOpen(item, index) {
+        return item.childData && this['list' + index]
+      }
+    },
+    mounted() {
+      this.$nextTick(() => {
+        this.outerScroll = new BScroll(this.$refs.outerWrapper, {
+          click: true
+        })
+        console.log(this.$refs.innerWrapper)
+        if (this.$refs.innerWrapper) {
+          this.innerScroll = new BScroll(this.$refs.innerWrapper, {
+            click: true
+          })
+        }
+      })
+    },
+    watch: {
+      data() {
+        setTimeout(() => {
+          this.refresh()
+        }, 20)
       }
     }
   }
@@ -28,9 +78,16 @@
 
   .group
     width: 100%
-    height: 35px
-    line-height: 35px
+    padding: 10px
     font-size: $fontsize-medium
     color: $color-grey
     background: $color-white
+    .icon
+      padding: 0 5px
+    .childData
+      height: 40px
+      line-height: 40px
+      font-size: $fontsize-large
+      border-1px($color-light-grey)
+      background : $color-white
 </style>

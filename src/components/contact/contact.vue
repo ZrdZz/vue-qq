@@ -28,7 +28,66 @@
     methods: {
       getFriends() {
         this.styleTab = true
-        this.data = ['我的好友', '哈哈', '家人']
+        this.data = [
+          {
+            name: '我的好友',
+            childData: [
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },
+              {
+              name: 'zrd'
+              },  
+            ]
+          },
+          {
+            name: '哈哈',
+            childData: [
+              {
+              name: 'zrd'
+              }
+            ]
+          }
+        ]
       },
       getGroups() {
         this.styleTab = false
