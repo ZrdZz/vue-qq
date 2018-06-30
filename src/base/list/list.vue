@@ -1,9 +1,9 @@
 <template>
-  <div class="list" ref="outerWrapper">
+  <div class="list" ref="wrapper">
     <ul>
-      <li class="group" @click="openList(index)" v-for="(item, index) in data" :key="index"> 
-        <i class="icon iconfont icon-xiangyoujiantou"></i> {{item.name}}
-        <div class="childList" ref="innerWrapper" v-if="ifOpen(item, index)">
+      <li class="group" @click="openList(index, $event)" v-for="(item, index) in data" :key="index">
+        <span class="groupTitle"> <i class="icon iconfont icon-xiangyoujiantou"></i>{{item.name}} </span> 
+        <div class="childList" v-if="ifOpen(item, index)">
           <ul>
             <li class="childData border-1px" v-for="(item, index) in item.childData" :key="index"> 
               <img />
@@ -35,15 +35,17 @@
     },
     methods: {
       refresh() {
-        if (this.outerScroll) {
-          this.outerScroll.refresh()
-        }
-        if (this.innerScroll) {
-          this.innerScroll.refresh()
+        if (this.wrapper) {
+          this.wrapper.refresh()
         }
       },
-      openList(index) {
+      openList(index, event) {
         this['list' + index] = !this['list' + index]
+        if (this['list' + index]) {
+          event.target.firstChild.style.transform = 'rotate(90deg)'
+        } else {
+          event.target.firstChild.style.transform = 'rotate(0deg)'
+        }
       },
       ifOpen(item, index) {
         return item.childData && this['list' + index]
@@ -51,15 +53,9 @@
     },
     mounted() {
       this.$nextTick(() => {
-        this.outerScroll = new BScroll(this.$refs.outerWrapper, {
+        this.scroll = new BScroll(this.$refs.wrapper, {
           click: true
         })
-        console.log(this.$refs.innerWrapper)
-        if (this.$refs.innerWrapper) {
-          this.innerScroll = new BScroll(this.$refs.innerWrapper, {
-            click: true
-          })
-        }
       })
     },
     watch: {
@@ -78,11 +74,16 @@
 
   .group
     width: 100%
-    padding: 10px
     font-size: $fontsize-medium
     color: $color-grey
     background: $color-white
+    .groupTitle
+      display: block
+      width: 100%
+      height: 100%
+      padding: 5px 0
     .icon
+      display: inline-block
       padding: 0 5px
     .childData
       height: 40px
