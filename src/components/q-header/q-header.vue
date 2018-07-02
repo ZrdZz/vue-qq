@@ -4,7 +4,7 @@
       <img :src="userInfo.avatar" width="40" height="40"/>
     </div>
     <h2 class="title"> {{title}} </h2>
-    <i class="icon iconfont icon-zengjia" @click="moreFeature"></i>
+    <i class="icon iconfont icon-zengjia" @click="moreFeature($event)"></i>
     <div class="feature" v-show="show">
       <ul>
         <li class="feature-item">添加好友</li>
@@ -35,7 +35,8 @@
       settingShow() {
         this.$router.push('/setting')
       },
-      moreFeature() {
+      moreFeature(e) {
+        e.stopPropagation()
         this.show = !this.show
       }
     },

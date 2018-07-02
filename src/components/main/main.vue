@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <q-header></q-header>
+  <div class="main" @click="closeFeature($event)">
+    <q-header ref="qHeader"></q-header>
     <search></search>
     <transition name="fade">
       <keep-alive>
@@ -21,6 +21,13 @@
       QHeader,
       Search,
       Tab
+    },
+    methods: {
+      closeFeature(e) {
+        if (this.$refs.qHeader.show) {
+          this.$refs.qHeader.show = !this.$refs.qHeader.show
+        }
+      }
     }
   }
 </script>
